@@ -13,7 +13,7 @@ interface Options {
 }
 
 interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
-  focalPoint: FocalPoint
+  __focal_point_instance__: FocalPoint
 }
 
 export class FocalPoint {
@@ -102,10 +102,10 @@ Refernce to container not found. Not sure how that happened.
         throw new Error("No image found within above container")
       }
     }
-    if (this.img.focalPoint) {
-      this.img.focalPoint.stopListening()
+    if (this.img.__focal_point_instance__) {
+      this.img.__focal_point_instance__.stopListening()
     }
-    this.img.focalPoint = this
+    this.img.__focal_point_instance__ = this
     this.img.onload = this.adjustFocus
   }
 
