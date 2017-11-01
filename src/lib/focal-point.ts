@@ -12,9 +12,13 @@ interface Options {
   debounceTime?: number
 }
 
+interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
+  focalPoint: FocalPoint
+}
+
 export class FocalPoint {
   container: HTMLDivElement
-  img: HTMLImageElement
+  img: HTMLImageElementWithFocalPoint
   listening: boolean
   debounceTimer: any
 
@@ -26,8 +30,6 @@ export class FocalPoint {
   ) {
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
-
-    this.img.onload = this.adjustFocus
     this.adjustFocus()
     this.startListening()
   }
@@ -87,17 +89,24 @@ Refernce to container not found. Not sure how that happened.
   setUpElementReferences(
     initializationNode: HTMLDivElement | HTMLImageElement,
   ) {
-    if (initializationNode.nodeName === "DIV") {
+    if (initializationNode.nodeName === "IMG") {
+      this.img = initializationNode as HTMLImageElementWithFocalPoint
+      this.container = initializationNode.parentElement as HTMLDivElement
+    } else {
       this.container = initializationNode as HTMLDivElement
-      this.img = initializationNode.querySelector("img")
+      this.img = initializationNode.querySelector(
+        "img",
+      ) as HTMLImageElementWithFocalPoint
       if (!this.img) {
         console.error(initializationNode)
         throw new Error("No image found within above container")
       }
-    } else if (initializationNode.nodeName === "IMG") {
-      this.img = initializationNode as HTMLImageElement
-      this.container = initializationNode.parentElement as HTMLDivElement
     }
+    if (this.img.focalPoint) {
+      this.img.focalPoint.stopListening()
+    }
+    this.img.focalPoint = this
+    this.img.onload = this.adjustFocus
   }
 
   debouncedAdjustFocus = () => {
