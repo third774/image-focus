@@ -1,8 +1,92 @@
+const IMG_STYLES = {
+  minHeight: "100%",
+  minWidth: "100%",
+  position: "absolute",
+  top: "0",
+  right: "0",
+  bottom: "0",
+  left: "0",
+}
+
+interface Options {
+  debounceTime?: number
+}
+
 export class FocalPoint {
   container: HTMLDivElement
   img: HTMLImageElement
+  listening: boolean
+  debounceTimer: any
 
-  constructor(private initializationNode: HTMLDivElement | HTMLImageElement) {
+  constructor(
+    private initializationNode: HTMLDivElement | HTMLImageElement,
+    private options: Options = {
+      debounceTime: 17,
+    },
+  ) {
+    this.setUpElementReferences(initializationNode)
+    this.setUpStyles()
+
+    this.img.onload = this.adjustFocus
+    this.adjustFocus()
+    this.startListening()
+  }
+
+  setUpStyles() {
+    for (const key in IMG_STYLES) {
+      this.img.style[key] = IMG_STYLES[key]
+    }
+
+    this.container.style.position = "relative"
+    this.container.style.overflow = "hidden"
+  }
+
+  startListening() {
+    if (this.listening) {
+      return
+    }
+    this.listening = true
+    window.addEventListener("resize", this.debouncedAdjustFocus)
+  }
+
+  stopListening() {
+    if (!this.listening) {
+      return
+    }
+    this.listening = false
+    window.removeEventListener("resize", this.debouncedAdjustFocus)
+  }
+
+  checkForStaticPosition() {
+    if (this.container.style.position === "static") {
+      console.warn(`
+This container has a static position. The image will not
+be contained properly unless it has a non-static position
+such as 'absolute' or 'relative'.`)
+    }
+  }
+
+  hasReferences() {
+    let hasReferences = true
+    if (!this.img) {
+      hasReferences = false
+      console.error(`
+Refernce to image not found. Make sure the container
+has an image inside it.
+`)
+    }
+    if (!this.container) {
+      hasReferences = false
+      console.error(`
+Refernce to container not found. Not sure how that happened.
+`)
+    }
+    return hasReferences
+  }
+
+  setUpElementReferences(
+    initializationNode: HTMLDivElement | HTMLImageElement,
+  ) {
     if (initializationNode.nodeName === "DIV") {
       this.container = initializationNode as HTMLDivElement
       this.img = initializationNode.querySelector("img")
@@ -14,21 +98,26 @@ export class FocalPoint {
       this.img = initializationNode as HTMLImageElement
       this.container = initializationNode.parentElement as HTMLDivElement
     }
-
-    this.img.style.position = "absolute"
-    // this.img.style.visibility = "hidden"
-    this.img.style.minHeight = "100%"
-    this.img.style.minWidth = "100%"
-
-    this.container.style.position = "relative"
-    this.container.style.overflow = "hidden"
-
-    window.addEventListener("resize", this.adjustFocus.bind(this))
-    this.img.onload = this.adjustFocus.bind(this)
-    this.adjustFocus()
   }
 
-  adjustFocus() {
+  debouncedAdjustFocus = () => {
+    if (this.debounceTimer) {
+      window.clearTimeout(this.debounceTimer)
+    }
+    this.debounceTimer = window.setTimeout(
+      this.adjustFocus,
+      this.options.debounceTime,
+    )
+  }
+
+  adjustFocus = () => {
+    // Check a couple things to alert at dev time of problems
+    if (!this.hasReferences()) {
+      // bail if no references
+      return
+    }
+    this.checkForStaticPosition()
+
     const imageW = this.img.naturalWidth
     const imageH = this.img.naturalHeight
     const containerW = this.container.getBoundingClientRect().width
@@ -54,8 +143,7 @@ export class FocalPoint {
 
     //Minimize image while still filling space
     if (imageW > containerW && imageH > containerH) {
-      this.img.style[wR > hR ? "max-height" : "max-width"] = "100%"
-      // $image.css(wR > hR ? "max-height" : "max-width", "100%")
+      this.img.style[wR > hR ? "maxHeight" : "maxWidth"] = "100%"
     }
 
     if (wR > hR) {
@@ -66,7 +154,6 @@ export class FocalPoint {
 
     this.img.style.top = vShift
     this.img.style.left = hShift
-    // this.img.style.visibility = "visible"
   }
 
   // Calculate the new left/top values of an image
