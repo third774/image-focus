@@ -1,4 +1,5 @@
 import { merge, noop } from "lodash"
+import { assignStyles } from "./helpers/assignStyles"
 
 declare var require
 const retina = require("../img/Retina.svg")
@@ -6,6 +7,18 @@ const retina = require("../img/Retina.svg")
 const IMAGE_STYLES = {
   display: "block",
   maxWidth: "100%",
+}
+
+const CONTAINER_STYLES = {
+  position: "relative",
+  overflow: "hidden",
+}
+
+const RETINA_STYLES = {
+  position: "absolute",
+  pointerEvents: "none",
+  top: "20px",
+  left: "20px",
 }
 
 const DEFAULT_OPTIONS: FocalPickerOptions = {
@@ -29,6 +42,7 @@ export class FocalPicker {
   container: HTMLElement
   img: HTMLImageElement
   retina: HTMLImageElement
+  dragging: boolean
 
   constructor(
     initializationNode: HTMLImageElement,
@@ -37,11 +51,15 @@ export class FocalPicker {
     this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
 
-    this.img.onclick = this.getFocus
+    this.img.onmousedown = this.startDragging
+    this.img.onmouseup = this.stopDragging
+    this.img.onmouseleave = this.stopDragging
+    this.img.onmousemove = this.handleDrag
 
-    for (const key in IMAGE_STYLES) {
-      this.img.style[key] = IMAGE_STYLES[key]
-    }
+    assignStyles(this.img, IMAGE_STYLES)
+    assignStyles(this.retina, RETINA_STYLES)
+    assignStyles(this.container, CONTAINER_STYLES)
+
     this.img.draggable = false
   }
 
@@ -59,38 +77,45 @@ export class FocalPicker {
     }
     this.retina = document.createElement("img")
     this.retina.src = retina
+    this.retina.draggable = false
     this.container.appendChild(this.retina)
-    this.retina.style.position = "absolute"
-    this.retina.style.pointerEvents = "none"
-    this.retina.style.top = "20px"
-    this.retina.style.left = "20px"
   }
 
-  getFocus = e => {
-    const imageRect = this.img.getBoundingClientRect()
+  startDragging = () => {
+    this.dragging = true
+  }
 
-    const imageW = imageRect.width
-    const imageH = imageRect.height
+  stopDragging = () => {
+    this.dragging = false
+  }
 
-    //Calculate FocusPoint coordinates
-    var offsetX = e.clientX - imageRect.left
-    var offsetY = e.clientY - imageRect.top
-    var focusX = (offsetX / imageW - 0.5) * 2
-    var focusY = (offsetY / imageH - 0.5) * -2
+  handleDrag = e => {
+    if (this.dragging) {
+      const imageRect = this.img.getBoundingClientRect()
 
-    this.options.onUpdate(focusX, focusY)
+      const imageW = imageRect.width
+      const imageH = imageRect.height
 
-    //Calculate CSS Percentages
-    var percentageX = offsetX / imageW * 100
-    var percentageY = offsetY / imageH * 100
+      //Calculate FocusPoint coordinates
+      var offsetX = e.clientX - imageRect.left
+      var offsetY = e.clientY - imageRect.top
+      var focusX = (offsetX / imageW - 0.5) * 2
+      var focusY = (offsetY / imageH - 0.5) * -2
 
-    //Leave a sweet target reticle at the focus point.
-    // $(".reticle").css({
-    //   top: percentageY + "%",
-    //   left: percentageX + "%",
-    // })
+      this.options.onUpdate(focusX, focusY)
 
-    this.retina.style.top = `calc(${percentageY}% - 10px)`
-    this.retina.style.left = `calc(${percentageX}% - 10px)`
+      //Calculate CSS Percentages
+      var percentageX = offsetX / imageW * 100
+      var percentageY = offsetY / imageH * 100
+
+      //Leave a sweet target reticle at the focus point.
+      // $(".reticle").css({
+      //   top: percentageY + "%",
+      //   left: percentageX + "%",
+      // })
+
+      this.retina.style.top = `calc(${percentageY}% - 11px)`
+      this.retina.style.left = `calc(${percentageX}% - 11px)`
+    }
   }
 }

@@ -35,25 +35,24 @@
       transition: all .25s ease-in-out;
     }
 
-    .focal-picker {
+    .focal-point-picker-container {
       position: absolute;
       top: 30px;
       left: 30px;
+      padding: 15px;
       width: 300px;
-      padding: 10px;
+
       background-color: ghostwhite;
       border-radius: 4px;
     }
 
-    .focal-picker img {
-      display: block;
-      max-width: 100%;
+    .focal-point-picker {
+      position: relative;
     }
 
-    .center {
-      color: magenta;
-      position: absolute;
-      top: 50%
+    .focal-point-picker img {
+      display: block;
+      max-width: 100%;
     }
   </style>
 </head>
@@ -89,8 +88,10 @@
     </div>
   </div>
 
-  <div class="focal-picker">
-    <img id="focus-picker-img" src="https://picsum.photos/2400/1405?random" alt="">
+  <div class="focal-point-picker-container">
+    <div class="focal-point-picker">
+      <img id="focus-point-picker-img" src="https://picsum.photos/2400/1405?random" alt="">
+    </div>
   </div>
 </body>
 

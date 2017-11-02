@@ -19,7 +19,7 @@ function updateFocalPoints(x, y) {
   })
 }
 
-const focalPicker = document.getElementById("focus-picker-img")
+const focalPicker = document.getElementById("focus-point-picker-img")
 if (focalPicker) {
   new FocalPicker(focalPicker as HTMLImageElement, {
     onUpdate: updateFocalPoints,
