@@ -81,8 +81,9 @@ export class FocalPicker {
     this.container.appendChild(this.retina)
   }
 
-  startDragging = () => {
+  startDragging = e => {
     this.dragging = true
+    this.handleDrag(e)
   }
 
   stopDragging = () => {
