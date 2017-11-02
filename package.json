@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/third774/focal-point#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.80",
+    "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
+    "lodash": "^4.17.4",
     "ts-loader": "^3.1.1",
     "typescript": "^2.5.3",
     "webpack": "^3.8.1",
