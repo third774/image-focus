@@ -34,6 +34,27 @@
     .focal-point img {
       transition: all .25s ease-in-out;
     }
+
+    .focal-picker {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 300px;
+      padding: 10px;
+      background-color: ghostwhite;
+      border-radius: 4px;
+    }
+
+    .focal-picker img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .center {
+      color: magenta;
+      position: absolute;
+      top: 50%
+    }
   </style>
 </head>
 
@@ -66,6 +87,10 @@
     <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
       <img src="https://picsum.photos/2400/1405?random" alt="">
     </div>
+  </div>
+
+  <div class="focal-picker">
+    <img id="focus-picker-img" src="https://picsum.photos/2400/1405?random" alt="">
   </div>
 </body>
 
