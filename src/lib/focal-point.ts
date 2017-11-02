@@ -1,3 +1,5 @@
+import { merge, debounce } from "lodash"
+
 const IMG_STYLES = {
   minHeight: "100%",
   minWidth: "100%",
@@ -8,7 +10,7 @@ const IMG_STYLES = {
   left: "0",
 }
 
-interface Options {
+export interface FocalPointOptions {
   debounceTime?: number
 }
 
@@ -16,20 +18,29 @@ interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
   __focal_point_instance__: FocalPoint
 }
 
+const DEFAULT_OPTIONS: FocalPointOptions = {
+  debounceTime: 17,
+}
+
 export class FocalPoint {
-  container: HTMLDivElement
+  options: FocalPointOptions
+  container: HTMLElement
   img: HTMLImageElementWithFocalPoint
   listening: boolean
-  debounceTimer: any
+  debouncedAdjustFocus: any
 
   constructor(
-    private initializationNode: HTMLDivElement | HTMLImageElement,
-    private options: Options = {
-      debounceTime: 17,
-    },
+    private initializationNode: HTMLElement | HTMLImageElement,
+    options?: FocalPointOptions,
   ) {
+    this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
+    this.debouncedAdjustFocus
+    this.debouncedAdjustFocus = debounce(
+      this.adjustFocus,
+      this.options.debounceTime,
+    )
     this.adjustFocus()
     this.startListening()
   }
@@ -86,14 +97,12 @@ Refernce to container not found. Not sure how that happened.
     return hasReferences
   }
 
-  setUpElementReferences(
-    initializationNode: HTMLDivElement | HTMLImageElement,
-  ) {
+  setUpElementReferences(initializationNode: HTMLElement | HTMLImageElement) {
     if (initializationNode.nodeName === "IMG") {
       this.img = initializationNode as HTMLImageElementWithFocalPoint
-      this.container = initializationNode.parentElement as HTMLDivElement
+      this.container = initializationNode.parentElement as HTMLElement
     } else {
-      this.container = initializationNode as HTMLDivElement
+      this.container = initializationNode as HTMLElement
       this.img = initializationNode.querySelector(
         "img",
       ) as HTMLImageElementWithFocalPoint
@@ -107,16 +116,6 @@ Refernce to container not found. Not sure how that happened.
     }
     this.img.__focal_point_instance__ = this
     this.img.onload = this.adjustFocus
-  }
-
-  debouncedAdjustFocus = () => {
-    if (this.debounceTimer) {
-      window.clearTimeout(this.debounceTimer)
-    }
-    this.debounceTimer = window.setTimeout(
-      this.adjustFocus,
-      this.options.debounceTime,
-    )
   }
 
   adjustFocus = () => {
