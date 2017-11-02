@@ -1,4 +1,5 @@
 import { merge, debounce } from "lodash"
+import { assignStyles } from "./helpers/assignStyles"
 
 const IMG_STYLES = {
   minHeight: "100%",
@@ -8,6 +9,11 @@ const IMG_STYLES = {
   right: "0",
   bottom: "0",
   left: "0",
+}
+
+const CONTAINER_STYLES = {
+  position: "relative",
+  overflow: "hidden",
 }
 
 export interface FocalPointOptions {
@@ -46,12 +52,8 @@ export class FocalPoint {
   }
 
   setUpStyles() {
-    for (const key in IMG_STYLES) {
-      this.img.style[key] = IMG_STYLES[key]
-    }
-
-    this.container.style.position = "relative"
-    this.container.style.overflow = "hidden"
+    assignStyles(this.img, IMG_STYLES)
+    assignStyles(this.container, CONTAINER_STYLES)
   }
 
   startListening() {
