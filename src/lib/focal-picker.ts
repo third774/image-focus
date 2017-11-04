@@ -49,9 +49,12 @@ export class FocalPicker {
   ) {
     this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
+    this.initailizeFocusCoordinates()
     this.bindContainerEvents()
     this.setUpImageAttributes()
+  }
 
+  assignStyles() {
     assignStyles(this.img, IMAGE_STYLES)
     assignStyles(this.retina, RETINA_STYLES)
     assignStyles(this.container, CONTAINER_STYLES)
@@ -99,7 +102,6 @@ export class FocalPicker {
   setUpImageAttributes() {
     this.img.draggable = false
     this.img.onload = () => {
-      this.initailizeFocusCoordinates()
       this.updateRetinaPosition(this.calculateOffsetFromFocus())
     }
   }
