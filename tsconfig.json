@@ -1,10 +1,18 @@
 {
     "compilerOptions": {
         "target": "es5",
+        "outDir": "dist",
         "sourceMap": true,
-        "lib": ["es6", "dom"]
+        "lib": ["es6", "dom"],
+        "moduleResolution": "node",
+        "module": "es2015",
+        "baseUrl": "src",
+        "declaration": true
     },
     "exclude": [
         "node_modules"
+    ],
+    "include": [
+      "src/**/*"
     ]
 }

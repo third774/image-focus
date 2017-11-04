@@ -1,4 +1,5 @@
-import { merge, debounce } from "lodash"
+import merge from "lodash.merge"
+import debounce from "lodash.debounce"
 import { assignStyles } from "./helpers/assignStyles"
 
 const IMG_STYLES = {
@@ -20,7 +21,7 @@ export interface FocalPointOptions {
   debounceTime?: number
 }
 
-interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
+export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
   __focal_point_instance__: FocalPoint
 }
 

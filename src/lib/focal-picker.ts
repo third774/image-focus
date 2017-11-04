@@ -1,4 +1,5 @@
-import { merge, noop } from "lodash"
+import merge from "lodash.merge"
+import noop from "lodash.noop"
 import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
 

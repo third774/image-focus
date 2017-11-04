@@ -1,5 +1,4 @@
-import { FocalPoint, initializeFocalPoint } from "./lib/focal-point"
-import { FocalPicker } from "./lib/focal-picker"
+import { FocalPoint, FocalPicker, initializeFocalPoint } from "./lib/main"
 
 // window["initializeFocalPoint"] = initializeFocalPoint
 const focalPoints: FocalPoint[] = []

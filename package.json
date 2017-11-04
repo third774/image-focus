@@ -2,10 +2,14 @@
   "name": "focal-point",
   "version": "1.0.0",
   "description": "",
-  "main": "src/focal-point.ts",
+  "types": "dist/lib/main.d.ts",
+  "main": "dist/focal-point.cjs.js",
+  "module": "dist/focal-point.esm.js",
+  "browser": "dist/focal-point.umd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -21,10 +25,19 @@
     "@types/lodash": "^4.14.80",
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
-    "lodash": "^4.17.4",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.8.0",
     "ts-loader": "^3.1.1",
     "typescript": "^2.5.3",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "lodash.isfinite": "^3.3.2",
+    "lodash.merge": "^4.6.0",
+    "lodash.noop": "^3.0.1"
   }
 }
