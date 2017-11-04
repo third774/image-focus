@@ -16,7 +16,7 @@ const CONTAINER_STYLES = {
 
 const RETINA_STYLES = {
   position: "absolute",
-  pointerEvents: "none",
+  cursor: "move",
   top: "20px",
   left: "20px",
 }
@@ -51,10 +51,10 @@ export class FocalPicker {
     this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
 
-    this.img.onmousedown = this.startDragging
-    this.img.onmouseup = this.stopDragging
-    this.img.onmouseleave = this.stopDragging
-    this.img.onmousemove = this.handleDrag
+    this.container.onmousedown = this.startDragging
+    this.container.onmouseup = this.stopDragging
+    this.container.onmouseleave = this.stopDragging
+    this.container.onmousemove = this.handleDrag
 
     assignStyles(this.img, IMAGE_STYLES)
     assignStyles(this.retina, RETINA_STYLES)
@@ -103,20 +103,10 @@ export class FocalPicker {
       var focusX = (offsetX / imageW - 0.5) * 2
       var focusY = (offsetY / imageH - 0.5) * -2
 
+      this.retina.style.top = `calc(${offsetY}px - 10px)`
+      this.retina.style.left = `calc(${offsetX}px - 10px)`
+
       this.options.onUpdate(focusX, focusY)
-
-      //Calculate CSS Percentages
-      var percentageX = offsetX / imageW * 100
-      var percentageY = offsetY / imageH * 100
-
-      //Leave a sweet target reticle at the focus point.
-      // $(".reticle").css({
-      //   top: percentageY + "%",
-      //   left: percentageX + "%",
-      // })
-
-      this.retina.style.top = `calc(${percentageY}% - 11px)`
-      this.retina.style.left = `calc(${percentageX}% - 11px)`
     }
   }
 }
