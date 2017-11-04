@@ -52,6 +52,7 @@ export class FocalPicker {
     this.initailizeFocusCoordinates()
     this.bindContainerEvents()
     this.setUpImageAttributes()
+    this.assignStyles()
   }
 
   assignStyles() {
