@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
   entry: {
-    app: "./src/app.ts",
+    app: "./src/demo/demo.ts",
   },
   devtool: "inline-source-map",
   devServer: {
@@ -26,7 +26,7 @@ module.exports = {
     // new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
       title: "Development",
-      template: "src/index.html",
+      template: "src/demo/index.html",
     }),
   ],
   output: {

@@ -1,6 +1,2 @@
-export { FocalPicker, FocalPickerOptions } from "lib/focal-picker"
-export {
-  FocalPoint,
-  FocalPointOptions,
-  initializeFocalPoint,
-} from "lib/focal-point"
+export { FocalPicker, FocalPickerOptions } from "./focal-picker"
+export { FocalPoint, FocalPointOptions, initializeFocalPoint } from "./focal-point"

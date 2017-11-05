@@ -36,18 +36,11 @@ export class FocalPoint {
   listening: boolean
   debouncedAdjustFocus: any
 
-  constructor(
-    private initializationNode: HTMLElement | HTMLImageElement,
-    options?: FocalPointOptions,
-  ) {
+  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocalPointOptions) {
     this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
-    this.debouncedAdjustFocus
-    this.debouncedAdjustFocus = debounce(
-      this.adjustFocus,
-      this.options.debounceTime,
-    )
+    this.debouncedAdjustFocus = debounce(this.adjustFocus, this.options.debounceTime)
     this.adjustFocus()
     this.startListening()
   }
@@ -106,9 +99,7 @@ Refernce to container not found. Not sure how that happened.
       this.container = initializationNode.parentElement as HTMLElement
     } else {
       this.container = initializationNode as HTMLElement
-      this.img = initializationNode.querySelector(
-        "img",
-      ) as HTMLImageElementWithFocalPoint
+      this.img = initializationNode.querySelector("img") as HTMLImageElementWithFocalPoint
       if (!this.img) {
         console.error(initializationNode)
         throw new Error("No image found within above container")
@@ -133,26 +124,26 @@ Refernce to container not found. Not sure how that happened.
     const imageH = this.img.naturalHeight
     const containerW = this.container.getBoundingClientRect().width
     const containerH = this.container.getBoundingClientRect().height
-    const focusX = parseFloat(this.container.getAttribute("data-focus-x"))
-    const focusY = parseFloat(this.container.getAttribute("data-focus-y"))
+    const focusX = parseFloat(this.container.getAttribute("data-focus-x") as string)
+    const focusY = parseFloat(this.container.getAttribute("data-focus-y") as string)
 
-    //Amount position will be shifted
+    // Amount position will be shifted
     let hShift = "0"
     let vShift = "0"
 
     if (!(containerW > 0 && containerH > 0 && imageW > 0 && imageH > 0)) {
-      return false //Need dimensions to proceed
+      return false // Need dimensions to proceed
     }
 
-    //Which is over by more?
+    // Which is over by more?
     const wR = imageW / containerW
     const hR = imageH / containerH
 
-    //Reset max-width and -height
+    // Reset max-width and -height
     this.img.style.maxHeight = null
     this.img.style.maxWidth = null
 
-    //Minimize image while still filling space
+    // Minimize image while still filling space
     if (imageW > containerW && imageH > containerH) {
       this.img.style[wR > hR ? "maxHeight" : "maxWidth"] = "100%"
     }
@@ -175,16 +166,15 @@ Refernce to container not found. Not sure how that happened.
     focusSize: number,
     toMinus?: boolean,
   ) {
-    const containerCenter = Math.floor(containerSize / 2) //Container center in px
-    const focusFactor = (focusSize + 1) / 2 //Focus point of resize image in px
-    const scaledImage = Math.floor(imageSize / conToImageRatio) //Can't use width() as images may be display:none
+    const containerCenter = Math.floor(containerSize / 2) // Container center in px
+    const focusFactor = (focusSize + 1) / 2 // Focus point of resize image in px
+    const scaledImage = Math.floor(imageSize / conToImageRatio) // Can't use width() as images may be display:none
     let focus = Math.floor(focusFactor * scaledImage)
     if (toMinus) focus = scaledImage - focus
-    let focusOffset = focus - containerCenter //Calculate difference between focus point and center
-    const remainder = scaledImage - focus //Reduce offset if necessary so image remains filled
+    let focusOffset = focus - containerCenter // Calculate difference between focus point and center
+    const remainder = scaledImage - focus // Reduce offset if necessary so image remains filled
     const containerRemainder = containerSize - containerCenter
-    if (remainder < containerRemainder)
-      focusOffset -= containerRemainder - remainder
+    if (remainder < containerRemainder) focusOffset -= containerRemainder - remainder
     if (focusOffset < 0) focusOffset = 0
 
     return focusOffset * -100 / containerSize + "%"
@@ -192,5 +182,5 @@ Refernce to container not found. Not sure how that happened.
 }
 
 export function initializeFocalPoint(el) {
-  new FocalPoint(el)
+  return new FocalPoint(el)
 }

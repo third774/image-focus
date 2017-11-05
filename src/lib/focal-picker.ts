@@ -2,9 +2,7 @@ import merge from "lodash.merge"
 import noop from "lodash.noop"
 import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
-
-declare var require
-const retina = require("../img/Retina.svg")
+import { retina } from "./retina"
 
 const IMAGE_STYLES = {
   display: "block",
@@ -39,15 +37,12 @@ export class FocalPicker {
   private options: FocalPickerOptions
   container: HTMLElement
   img: HTMLImageElement
-  retina: HTMLImageElement
+  retina: SVGElement
   isDragging: boolean
   focusX: number
   focusY: number
 
-  constructor(
-    initializationNode: HTMLImageElement,
-    options: FocalPickerOptions,
-  ) {
+  constructor(initializationNode: HTMLImageElement, options: FocalPickerOptions) {
     this.options = merge(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.initailizeFocusCoordinates()
@@ -88,9 +83,13 @@ export class FocalPicker {
         throw new Error("No image found within above container")
       }
     }
-    this.retina = document.createElement("img")
-    this.retina.src = retina
-    this.retina.draggable = false
+    this.retina = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+    this.retina.setAttribute("width", "20")
+    this.retina.setAttribute("height", "20")
+    this.retina.setAttribute("viewBox", "0 0 20 20")
+
+    this.retina.innerHTML = retina
+
     this.container.appendChild(this.retina)
   }
 
