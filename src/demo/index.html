@@ -24,12 +24,8 @@
       height: 100%;
     }
 
-    .focal-point {
-      height: 100%;
-      width: 100%;
-    }
-
     .focal-point img {
+      /* Just animating transitions */
       transition: top .25s ease-in-out, left .25s ease-in-out;
     }
 
@@ -42,15 +38,6 @@
 
       background-color: ghostwhite;
       border-radius: 4px;
-    }
-
-    .focal-point-picker {
-      position: relative;
-    }
-
-    .focal-point-picker img {
-      display: block;
-      max-width: 100%;
     }
   </style>
 </head>
@@ -87,9 +74,11 @@
   </div>
 
   <div class="focal-point-picker-container">
+    <p class="help-text">Drag to select focal point</p>
     <div class="focal-point-picker" data-focus-x=".75" data-focus-y="-0.25">
       <img id="focus-point-picker-img" src="https://picsum.photos/2400/1400?random" alt="">
     </div>
+    <input type="text" value="https://picsum.photos/2400/1400?random">
   </div>
 </body>
 
