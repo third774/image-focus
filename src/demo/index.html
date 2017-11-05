@@ -8,6 +8,10 @@
   <title>focal-point</title>
 
   <style>
+    body {
+      font-family: monospace;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: 6fr 3fr 2fr;
@@ -39,46 +43,64 @@
       background-color: ghostwhite;
       border-radius: 4px;
     }
+
+    input {
+      width: 100%;
+      font-size: 14px;
+      font-family: monospace;
+      box-sizing: border-box;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
   </style>
 </head>
 
 <body>
   <div class="grid">
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <div class="focal-point" data-focus-x=".75" data-focus-y="-0.25">
+    <div class="focal-point" data-focus-x="0" data-focus-y="0">
       <img src="https://picsum.photos/2400/1400?random" alt="">
     </div>
   </div>
 
   <div class="focal-point-picker-container">
-    <p class="help-text">Drag to select focal point</p>
-    <div class="focal-point-picker" data-focus-x=".75" data-focus-y="-0.25">
+    <h3>Drag to select focal point</h3>
+    <div class="focal-point-picker" data-focus-x="0" data-focus-y="0">
       <img id="focus-point-picker-img" src="https://picsum.photos/2400/1400?random" alt="">
     </div>
-    <input type="text" value="https://picsum.photos/2400/1400?random">
+    <p>Update image URL below:</p>
+    <input class="image-src" type="text" value="https://picsum.photos/2400/1400?random">
+    <p>Coordinates:</p>
+    <input class="coordinates" type="text" value="{x:  0.00, y:  0.00}">
   </div>
 </body>
 
