@@ -19,7 +19,7 @@ const CONTAINER_STYLES = {
   overflow: "hidden",
 }
 
-export interface ImageFocusOptions {
+export interface FocusedImageOptions {
   debounceTime?: number
   focus?: {
     x: number
@@ -28,21 +28,21 @@ export interface ImageFocusOptions {
 }
 
 export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
-  __focal_point_instance__: ImageFocus
+  __focal_point_instance__: FocusedImage
 }
 
-const DEFAULT_OPTIONS: ImageFocusOptions = {
+const DEFAULT_OPTIONS: FocusedImageOptions = {
   debounceTime: 17,
 }
 
-export class ImageFocus {
-  options: ImageFocusOptions
+export class FocusedImage {
+  options: FocusedImageOptions
   container: HTMLElement
   img: HTMLImageElementWithFocalPoint
   listening: boolean
   debouncedAdjustFocus: () => void
 
-  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: ImageFocusOptions) {
+  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocusedImageOptions) {
     this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
@@ -197,6 +197,6 @@ Reference to container not found. Not sure how that happened.
   }
 }
 
-export function initImageFocus(el) {
-  return new ImageFocus(el)
+export function initFocusedImage(el) {
+  return new FocusedImage(el)
 }
