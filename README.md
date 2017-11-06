@@ -14,13 +14,13 @@ npm install image-focus
 ```ts
 import { FocusedImage, FocusPicker, initFocusedImage } from "image-focus"
 
-const images: FocusedImage[] = []
+const focusedImages: FocusedImage[] = []
 
 const startingFocus = { x: 0.81, y: -0.69 }
 
-Array.prototype.forEach.call(document.querySelectorAll(".image-focus"), function(container: HTMLElement) {
-  images.push(
-    new FocusedImage(container, {
+Array.prototype.forEach.call(document.querySelectorAll(".focused-image"), function(image: HTMLImageElement) {
+  focusedImages.push(
+    new FocusedImage(image, {
       focus: startingFocus,
     }),
   )
@@ -34,10 +34,10 @@ function updateCoordinatesValue({ x, y }: { x: number; y: number }) {
 
 updateCoordinatesValue(startingFocus)
 
-const focusPickerEl = document.getElementById("image-focus-picker-img")
+const focusPickerEl = document.getElementById("focus-picker-img")
 const focusPicker = new FocusPicker(focusPickerEl as HTMLImageElement, {
   onChange: (x: number, y: number) => {
-    images.forEach(i => i.setFocus(x, y))
+    focusedImages.forEach(focusedImage => focusedImage.setFocus(x, y))
     updateCoordinatesValue({ x, y })
   },
   focus: startingFocus,
@@ -47,7 +47,7 @@ const imgSrc = document.querySelector(".image-src") as HTMLInputElement
 
 imgSrc.addEventListener("input", function(e) {
   focusPicker.img.src = imgSrc.value
-  images.forEach(fp => (fp.img.src = imgSrc.value))
+  focusedImages.forEach(fp => (fp.img.src = imgSrc.value))
 })
 
 ```
