@@ -12,7 +12,7 @@ npm install image-focus
 ```
 
 ```ts
-import { FocusedImage, FocusPicker, initFocusedImage } from "../lib/main"
+import { FocusedImage, FocusPicker, initFocusedImage } from "image-focus"
 
 const images: FocusedImage[] = []
 
