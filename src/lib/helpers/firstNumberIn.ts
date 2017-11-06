@@ -1,5 +1,5 @@
-import isFinite from "lodash.isfinite"
-
-export function firstNumberIn(values: any[]): number {
-  return values.find(value => isFinite(value))
+export function firstNumberIn(values: (string | number)[]): number {
+  return values
+    .map(val => (typeof val === "string" ? parseFloat(val) : val))
+    .find(value => typeof value === "number")
 }

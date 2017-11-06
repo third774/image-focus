@@ -63,13 +63,13 @@ export class FocalPicker {
   initailizeFocusCoordinates() {
     this.focusX = firstNumberIn([
       this.options.initialCoordinates && this.options.initialCoordinates.x,
-      parseFloat(this.container.getAttribute("data-focus-x")),
+      this.container.getAttribute("data-focus-x"),
       0,
     ])
 
     this.focusY = firstNumberIn([
       this.options.initialCoordinates && this.options.initialCoordinates.y,
-      parseFloat(this.container.getAttribute("data-focus-y")),
+      this.container.getAttribute("data-focus-y"),
       0,
     ])
   }
