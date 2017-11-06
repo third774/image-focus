@@ -51,3 +51,7 @@ imgSrc.addEventListener("input", function(e) {
 })
 
 ```
+
+## Attributions
+
+This project was largely inspired by and adapted from [jquery-focuspoint](https://github.com/jonom/jquery-focuspoint) by [jonom](https://github.com/jonom) and used [typescript-library-starter](https://github.com/alexjoverm/typescript-library-starter) to scaffold the build process.
