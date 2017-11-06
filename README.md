@@ -12,15 +12,15 @@ npm install image-focus
 ```
 
 ```ts
-import { ImageFocus, FocusPicker, initImageFocus } from "../lib/main"
+import { FocusedImage, FocusPicker, initFocusedImage } from "../lib/main"
 
-const images: ImageFocus[] = []
+const images: FocusedImage[] = []
 
 const startingFocus = { x: 0.81, y: -0.69 }
 
 Array.prototype.forEach.call(document.querySelectorAll(".image-focus"), function(container: HTMLElement) {
   images.push(
-    new ImageFocus(container, {
+    new FocusedImage(container, {
       focus: startingFocus,
     }),
   )
@@ -49,4 +49,5 @@ imgSrc.addEventListener("input", function(e) {
   focusPicker.img.src = imgSrc.value
   images.forEach(fp => (fp.img.src = imgSrc.value))
 })
+
 ```
