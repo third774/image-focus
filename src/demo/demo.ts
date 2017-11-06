@@ -1,4 +1,4 @@
-import { FocusedImage, FocusPicker, initFocusedImage } from "../lib/main"
+import { FocusedImage, FocusPicker } from "../lib/main"
 
 const focusedImages: FocusedImage[] = []
 
