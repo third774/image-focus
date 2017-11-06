@@ -25,12 +25,12 @@ const RETINA_STYLES = {
 }
 
 const DEFAULT_OPTIONS: FocusPickerOptions = {
-  onUpdate: noop,
+  onChange: noop,
 }
 
 export interface FocusPickerOptions {
-  onUpdate?: (x: number, y: number) => void
-  initialCoordinates?: {
+  onChange?: (x: number, y: number) => void
+  focus?: {
     x: number
     y: number
   }
@@ -62,14 +62,14 @@ export class FocusPicker {
 
   initailizeFocusCoordinates() {
     this.focusX = firstNumberIn([
-      this.options.initialCoordinates && this.options.initialCoordinates.x,
-      this.container.getAttribute("data-focus-x"),
+      this.options.focus && this.options.focus.x,
+      this.img.getAttribute("data-focus-x"),
       0,
     ])
 
     this.focusY = firstNumberIn([
-      this.options.initialCoordinates && this.options.initialCoordinates.y,
-      this.container.getAttribute("data-focus-y"),
+      this.options.focus && this.options.focus.y,
+      this.img.getAttribute("data-focus-y"),
       0,
     ])
   }
@@ -142,13 +142,16 @@ export class FocusPicker {
       const { width, height, left, top } = this.img.getBoundingClientRect()
 
       // Calculate FocusPoint coordinates
-      var offsetX = e.clientX - left
-      var offsetY = e.clientY - top
-      var focusX = (offsetX / width - 0.5) * 2
-      var focusY = (offsetY / height - 0.5) * -2
+      const offsetX = e.clientX - left
+      const offsetY = e.clientY - top
+      const focusX = (offsetX / width - 0.5) * 2
+      const focusY = (offsetY / height - 0.5) * -2
 
       this.updateRetinaPosition({ offsetX, offsetY })
-      this.options.onUpdate(focusX, focusY)
+
+      this.img.setAttribute("data-focus-x", focusX.toString())
+      this.img.setAttribute("data-focus-y", focusY.toString())
+      this.options.onChange(focusX, focusY)
     }
   }
 }

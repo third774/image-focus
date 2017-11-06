@@ -48,87 +48,20 @@ export class ImageFocus {
     this.setUpStyles()
     this.debouncedAdjustFocus = debounce(this.applyShift, this.options.debounceTime)
     if (this.options.focus) {
-      this.updateFocus(this.options.focus.x, this.options.focus.y)
+      this.setFocus(this.options.focus.x, this.options.focus.y)
     } else {
       this.applyShift()
     }
     this.startListening()
   }
 
-  setUpStyles() {
-    assignStyles(this.img, IMG_STYLES)
-    assignStyles(this.container, CONTAINER_STYLES)
-  }
-
-  startListening() {
-    if (this.listening) {
-      return
-    }
-    this.listening = true
-    window.addEventListener("resize", this.debouncedAdjustFocus)
-  }
-
-  stopListening() {
-    if (!this.listening) {
-      return
-    }
-    this.listening = false
-    window.removeEventListener("resize", this.debouncedAdjustFocus)
-  }
-
-  checkForStaticPosition() {
-    if (this.container.style.position === "static") {
-      console.warn(`
-This container has a static position. The image will not
-be contained properly unless it has a non-static position
-such as 'absolute' or 'relative'.`)
-    }
-  }
-
-  hasReferences() {
-    let hasReferences = true
-    if (!this.img) {
-      hasReferences = false
-      console.error(`
-Reference to image not found. Make sure the container
-has an image inside it.
-`)
-    }
-    if (!this.container) {
-      hasReferences = false
-      console.error(`
-Reference to container not found. Not sure how that happened.
-`)
-    }
-    return hasReferences
-  }
-
-  setUpElementReferences(initializationNode: HTMLElement | HTMLImageElement) {
-    if (initializationNode.nodeName === "IMG") {
-      this.img = initializationNode as HTMLImageElementWithFocalPoint
-      this.container = initializationNode.parentElement as HTMLElement
-    } else {
-      this.container = initializationNode as HTMLElement
-      this.img = initializationNode.querySelector("img") as HTMLImageElementWithFocalPoint
-      if (!this.img) {
-        console.error(initializationNode)
-        throw new Error("No image found within above container")
-      }
-    }
-    if (this.img.__focal_point_instance__) {
-      this.img.__focal_point_instance__.stopListening()
-    }
-    this.img.__focal_point_instance__ = this
-    this.img.onload = this.applyShift
-  }
-
-  updateFocus = (x: number, y: number) => {
-    this.container.setAttribute("data-focus-x", x.toString())
-    this.container.setAttribute("data-focus-y", y.toString())
+  public setFocus = (x: number, y: number) => {
+    this.img.setAttribute("data-focus-x", x.toString())
+    this.img.setAttribute("data-focus-y", y.toString())
     this.applyShift()
   }
 
-  applyShift = () => {
+  public applyShift = () => {
     // Check a couple things to alert at dev time of problems
     if (!this.hasReferences()) {
       // bail if no references
@@ -140,8 +73,8 @@ Reference to container not found. Not sure how that happened.
     const imageH = this.img.naturalHeight
     const containerW = this.container.getBoundingClientRect().width
     const containerH = this.container.getBoundingClientRect().height
-    const focusX = parseFloat(this.container.getAttribute("data-focus-x") as string)
-    const focusY = parseFloat(this.container.getAttribute("data-focus-y") as string)
+    const focusX = parseFloat(this.img.getAttribute("data-focus-x") as string)
+    const focusY = parseFloat(this.img.getAttribute("data-focus-y") as string)
 
     // Amount position will be shifted
     let hShift = "0"
@@ -174,8 +107,75 @@ Reference to container not found. Not sure how that happened.
     this.img.style.left = hShift
   }
 
+  public startListening() {
+    if (this.listening) {
+      return
+    }
+    this.listening = true
+    window.addEventListener("resize", this.debouncedAdjustFocus)
+  }
+
+  public stopListening() {
+    if (!this.listening) {
+      return
+    }
+    this.listening = false
+    window.removeEventListener("resize", this.debouncedAdjustFocus)
+  }
+
+  private setUpStyles() {
+    assignStyles(this.img, IMG_STYLES)
+    assignStyles(this.container, CONTAINER_STYLES)
+  }
+
+  private checkForStaticPosition() {
+    if (this.container.style.position === "static") {
+      console.warn(`
+This container has a static position. The image will not
+be contained properly unless it has a non-static position
+such as 'absolute' or 'relative'.`)
+    }
+  }
+
+  private hasReferences() {
+    let hasReferences = true
+    if (!this.img) {
+      hasReferences = false
+      console.error(`
+Reference to image not found. Make sure the container
+has an image inside it.
+`)
+    }
+    if (!this.container) {
+      hasReferences = false
+      console.error(`
+Reference to container not found. Not sure how that happened.
+`)
+    }
+    return hasReferences
+  }
+
+  private setUpElementReferences(initializationNode: HTMLElement | HTMLImageElement) {
+    if (initializationNode.nodeName === "IMG") {
+      this.img = initializationNode as HTMLImageElementWithFocalPoint
+      this.container = initializationNode.parentElement as HTMLElement
+    } else {
+      this.container = initializationNode as HTMLElement
+      this.img = initializationNode.querySelector("img") as HTMLImageElementWithFocalPoint
+      if (!this.img) {
+        console.error(initializationNode)
+        throw new Error("No image found within above container")
+      }
+    }
+    if (this.img.__focal_point_instance__) {
+      this.img.__focal_point_instance__.stopListening()
+    }
+    this.img.__focal_point_instance__ = this
+    this.img.onload = this.applyShift
+  }
+
   // Calculate the new left/top values of an image
-  calcShift(
+  private calcShift(
     conToImageRatio: number,
     containerSize: number,
     imageSize: number,
