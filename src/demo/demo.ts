@@ -10,9 +10,7 @@ const coordinates = document.querySelector(".coordinates") as HTMLInputElement
 
 function updateCoordinates(x: number, y: number) {
   images.forEach(i => {
-    i.container.setAttribute("data-focus-x", x.toString())
-    i.container.setAttribute("data-focus-y", y.toString())
-    i.adjustFocus()
+    i.updateFocus(x, y)
   })
 
   coordinates.value = `{x: ${x > 0 ? " " : ""}${x.toFixed(2)}, y: ${y > 0 ? " " : ""}${y.toFixed(2)}}`

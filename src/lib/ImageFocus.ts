@@ -19,31 +19,39 @@ const CONTAINER_STYLES = {
   overflow: "hidden",
 }
 
-export interface FocalPointOptions {
+export interface ImageFocusOptions {
   debounceTime?: number
+  focus?: {
+    x: number
+    y: number
+  }
 }
 
 export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
   __focal_point_instance__: ImageFocus
 }
 
-const DEFAULT_OPTIONS: FocalPointOptions = {
+const DEFAULT_OPTIONS: ImageFocusOptions = {
   debounceTime: 17,
 }
 
 export class ImageFocus {
-  options: FocalPointOptions
+  options: ImageFocusOptions
   container: HTMLElement
   img: HTMLImageElementWithFocalPoint
   listening: boolean
   debouncedAdjustFocus: () => void
 
-  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocalPointOptions) {
+  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: ImageFocusOptions) {
     this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
-    this.debouncedAdjustFocus = debounce(this.adjustFocus, this.options.debounceTime)
-    this.adjustFocus()
+    this.debouncedAdjustFocus = debounce(this.applyShift, this.options.debounceTime)
+    if (this.options.focus) {
+      this.updateFocus(this.options.focus.x, this.options.focus.y)
+    } else {
+      this.applyShift()
+    }
     this.startListening()
   }
 
@@ -111,10 +119,16 @@ Reference to container not found. Not sure how that happened.
       this.img.__focal_point_instance__.stopListening()
     }
     this.img.__focal_point_instance__ = this
-    this.img.onload = this.adjustFocus
+    this.img.onload = this.applyShift
   }
 
-  adjustFocus = () => {
+  updateFocus = (x: number, y: number) => {
+    this.container.setAttribute("data-focus-x", x.toString())
+    this.container.setAttribute("data-focus-y", y.toString())
+    this.applyShift()
+  }
+
+  applyShift = () => {
     // Check a couple things to alert at dev time of problems
     if (!this.hasReferences()) {
       // bail if no references
