@@ -1,8 +1,16 @@
 {
   "name": "image-focus",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
-  "keywords": [],
+  "keywords": [
+    "responsive",
+    "image",
+    "focus",
+    "crop",
+    "cropper",
+    "focal",
+    "focuspoint"
+  ],
   "main": "dist/image-focus.umd.js",
   "module": "dist/image-focus.es5.js",
   "typings": "dist/types/main.d.ts",
