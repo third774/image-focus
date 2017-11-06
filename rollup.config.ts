@@ -7,7 +7,7 @@ import camelCase from "lodash.camelcase"
 
 const pkg = require("./package.json")
 
-const libraryName = "focal-point"
+const libraryName = "image-focus"
 
 export default {
   input: `compiled/main.js`,

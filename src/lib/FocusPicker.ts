@@ -24,11 +24,11 @@ const RETINA_STYLES = {
   left: "-200px",
 }
 
-const DEFAULT_OPTIONS: FocalPickerOptions = {
+const DEFAULT_OPTIONS: FocusPickerOptions = {
   onUpdate: noop,
 }
 
-export interface FocalPickerOptions {
+export interface FocusPickerOptions {
   onUpdate?: (x: number, y: number) => void
   initialCoordinates?: {
     x: number
@@ -36,16 +36,16 @@ export interface FocalPickerOptions {
   }
 }
 
-export class FocalPicker {
+export class FocusPicker {
   container: HTMLElement
   img: HTMLImageElement
   retina: SVGElement
   isDragging: boolean
   focusX: number
   focusY: number
-  private options: FocalPickerOptions
+  private options: FocusPickerOptions
 
-  constructor(initializationNode: HTMLImageElement, options: FocalPickerOptions) {
+  constructor(initializationNode: HTMLImageElement, options: FocusPickerOptions) {
     this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.initailizeFocusCoordinates()

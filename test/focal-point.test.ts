@@ -1,4 +1,4 @@
-import { FocalPoint } from "../src/focal-point"
+import { ImageFocus } from "../src/lib/ImageFocus"
 
 /**
  * Dummy test
@@ -9,6 +9,6 @@ describe("Dummy test", () => {
   })
 
   it("FocalPoint is instantiable", () => {
-    // expect(new FocalPoint()).toBeInstanceOf(DummyClass)
+    // expect(new ImageFocus()).toBeInstanceOf(DummyClass)
   })
 })

@@ -1,10 +1,10 @@
 {
-  "name": "focal-point",
+  "name": "image-focus",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/focal-point.umd.js",
-  "module": "dist/focal-point.es5.js",
+  "main": "dist/image-focus.umd.js",
+  "module": "dist/image-focus.es5.js",
   "typings": "dist/types/main.d.ts",
   "files": [
     "dist"
@@ -12,7 +12,7 @@
   "author": "Kevin Kipp <kevin.kipp@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/third774/focal-point"
+    "url": "https://github.com/third774/image-focus"
   },
   "license": "MIT",
   "engines": {

@@ -24,14 +24,14 @@ export interface FocalPointOptions {
 }
 
 export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
-  __focal_point_instance__: FocalPoint
+  __focal_point_instance__: ImageFocus
 }
 
 const DEFAULT_OPTIONS: FocalPointOptions = {
   debounceTime: 17,
 }
 
-export class FocalPoint {
+export class ImageFocus {
   options: FocalPointOptions
   container: HTMLElement
   img: HTMLImageElementWithFocalPoint
@@ -82,14 +82,14 @@ such as 'absolute' or 'relative'.`)
     if (!this.img) {
       hasReferences = false
       console.error(`
-Refernce to image not found. Make sure the container
+Reference to image not found. Make sure the container
 has an image inside it.
 `)
     }
     if (!this.container) {
       hasReferences = false
       console.error(`
-Refernce to container not found. Not sure how that happened.
+Reference to container not found. Not sure how that happened.
 `)
     }
     return hasReferences
@@ -183,6 +183,6 @@ Refernce to container not found. Not sure how that happened.
   }
 }
 
-export function initializeFocalPoint(el) {
-  return new FocalPoint(el)
+export function initImageFocus(el) {
+  return new ImageFocus(el)
 }
