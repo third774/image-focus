@@ -28,7 +28,7 @@
       height: 100%;
     }
 
-    .image-focus img {
+    .focused-image {
       /* Just animating transitions */
       transition: top .25s ease-in-out, left .25s ease-in-out;
     }
@@ -65,39 +65,39 @@
 
 <body>
   <div class="grid">
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="image-focus">
-      <img src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+    <div class="focused-image-container">
+      <img class="focused-image" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
   </div>
 
   <div class="image-focus-picker-container">
     <h3>Drag to select focal point</h3>
     <div class="image-focus-picker">
-      <img id="image-focus-picker-img" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
+      <img id="focus-picker-img" src="https://picsum.photos/2400/1400?random" alt="" data-focus-x="0" data-focus-y="0">
     </div>
     <p>Update image URL below:</p>
     <input class="image-src" type="text" value="https://picsum.photos/2400/1400?random">
