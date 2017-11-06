@@ -22,7 +22,7 @@
     "clean": "rimraf dist && rimraf compiled",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "npm run clean && tsc && rollup -c rollup.config.ts && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
+    "build": "npm run clean && tsc && rollup -c rollup.config.ts && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src/lib",
     "start": "npm run clean && webpack-dev-server --open",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -76,10 +76,6 @@
   },
   "devDependencies": {
     "@types/jest": "^21.1.0",
-    "@types/lodash.debounce": "^4.0.3",
-    "@types/lodash.isfinite": "^3.3.3",
-    "@types/lodash.merge": "^4.6.3",
-    "@types/lodash.noop": "^3.0.3",
     "@types/node": "^8.0.0",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
@@ -114,10 +110,5 @@
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },
-  "dependencies": {
-    "lodash.debounce": "^4.0.8",
-    "lodash.isfinite": "^3.3.2",
-    "lodash.merge": "^4.6.0",
-    "lodash.noop": "^3.0.1"
-  }
+  "dependencies": {}
 }

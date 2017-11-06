@@ -1,5 +1,7 @@
-import merge from "lodash.merge"
-import debounce from "lodash.debounce"
+import "./polyfills"
+import { Cancelable } from "lodash"
+
+import { debounce } from "./helpers/debounce"
 import { assignStyles } from "./helpers/assignStyles"
 
 const IMG_STYLES = {
@@ -34,10 +36,10 @@ export class FocalPoint {
   container: HTMLElement
   img: HTMLImageElementWithFocalPoint
   listening: boolean
-  debouncedAdjustFocus: any
+  debouncedAdjustFocus: () => void
 
   constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocalPointOptions) {
-    this.options = merge(DEFAULT_OPTIONS, options)
+    this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
     this.debouncedAdjustFocus = debounce(this.adjustFocus, this.options.debounceTime)

@@ -1,7 +1,9 @@
-import merge from "lodash.merge"
-import noop from "lodash.noop"
 import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
+import { noop } from "./helpers/noop"
+
+import "./polyfills"
+
 import { retina } from "./retina"
 
 const IMAGE_STYLES = {
@@ -35,16 +37,16 @@ export interface FocalPickerOptions {
 }
 
 export class FocalPicker {
-  private options: FocalPickerOptions
   container: HTMLElement
   img: HTMLImageElement
   retina: SVGElement
   isDragging: boolean
   focusX: number
   focusY: number
+  private options: FocalPickerOptions
 
   constructor(initializationNode: HTMLImageElement, options: FocalPickerOptions) {
-    this.options = merge(DEFAULT_OPTIONS, options)
+    this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.initailizeFocusCoordinates()
     this.bindContainerEvents()
@@ -139,7 +141,7 @@ export class FocalPicker {
     if (this.isDragging) {
       const { width, height, left, top } = this.img.getBoundingClientRect()
 
-      //Calculate FocusPoint coordinates
+      // Calculate FocusPoint coordinates
       var offsetX = e.clientX - left
       var offsetY = e.clientY - top
       var focusX = (offsetX / width - 0.5) * 2
