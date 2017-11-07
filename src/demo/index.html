@@ -14,8 +14,11 @@
 
     .grid {
       display: grid;
+      display: -ms-grid;
       grid-template-columns: 6fr 3fr 2fr;
+      -ms-grid-columns: 6fr 3fr 2fr;
       grid-template-rows: 6fr 3fr 2fr;
+      -ms-grid-rows: 6fr 3fr 2fr;
       grid-gap: 5px;
 
       position: absolute;
@@ -26,6 +29,51 @@
 
       /* needed for safari */
       height: 100%;
+    }
+
+    .top-left {
+      -ms-grid-column: 1;
+      -ms-grid-row: 1;
+    }
+
+    .top-center {
+      -ms-grid-column: 2;
+      -ms-grid-row: 1;
+    }
+
+    .top-right {
+      -ms-grid-column: 3;
+      -ms-grid-row: 1;
+    }
+
+    .center-left {
+      -ms-grid-column: 1;
+      -ms-grid-row: 2;
+    }
+
+    .center-center {
+      -ms-grid-column: 2;
+      -ms-grid-row: 2;
+    }
+
+    .center-right {
+      -ms-grid-column: 3;
+      -ms-grid-row: 2;
+    }
+
+    .bottom-left {
+      -ms-grid-column: 1;
+      -ms-grid-row: 3;
+    }
+
+    .bottom-center {
+      -ms-grid-column: 2;
+      -ms-grid-row: 3;
+    }
+
+    .bottom-right {
+      -ms-grid-column: 3;
+      -ms-grid-row: 3;
     }
 
     .focused-image {
@@ -70,31 +118,31 @@
 
 <body>
   <div class="grid">
-    <div class="focused-image-container">
+    <div class="focused-image-container top-left">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container top-center">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container top-right">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container center-left">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container center-center">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container center-right">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container bottom-left">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container bottom-center">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div class="focused-image-container">
+    <div class="focused-image-container bottom-right">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
   </div>
