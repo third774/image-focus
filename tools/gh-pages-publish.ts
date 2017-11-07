@@ -1,3 +1,4 @@
+require("dotenv").config()
 const { cd, exec, echo, touch } = require("shelljs")
 const { readFileSync } = require("fs")
 const url = require("url")
@@ -25,7 +26,5 @@ exec("git add .")
 exec('git config user.name "Kevin Kipp"')
 exec('git config user.email "kevin.kipp@gmail.com"')
 exec('git commit -m "docs(docs): update gh-pages"')
-exec(
-  `git push --force --quiet "https://${ghToken}@${repository}" master:gh-pages`
-)
+exec(`git push --force --quiet "https://${ghToken}@${repository}" master:gh-pages`)
 echo("Docs deployed!!")
