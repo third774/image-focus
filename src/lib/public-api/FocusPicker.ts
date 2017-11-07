@@ -20,8 +20,6 @@ const CONTAINER_STYLES = {
 const RETINA_STYLES = {
   position: "absolute",
   cursor: "move",
-  top: "-200px",
-  left: "-200px",
 }
 
 const DEFAULT_OPTIONS: FocusPickerOptions = {
@@ -48,10 +46,11 @@ export class FocusPicker {
   constructor(initializationNode: HTMLImageElement, options: FocusPickerOptions) {
     this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
-    this.initailizeFocusCoordinates()
     this.bindContainerEvents()
     this.setUpImageAttributes()
     this.assignStyles()
+    this.initailizeFocusCoordinates()
+    setTimeout(() => this.updateRetinaPosition(this.calculateOffsetFromFocus()), 0)
   }
 
   assignStyles() {

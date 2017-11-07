@@ -10,8 +10,10 @@ const IMG_STYLES = {
   position: "absolute",
   top: "0",
   right: "0",
-  bottom: "0",
-  left: "0",
+  maxHeight: "initial",
+  maxWidth: "initial",
+  height: "initial",
+  width: "initial",
 }
 
 const CONTAINER_STYLES = {
@@ -40,24 +42,23 @@ export class FocusedImage {
   container: HTMLElement
   img: HTMLImageElementWithFocalPoint
   listening: boolean
-  debouncedAdjustFocus: () => void
+  debounceApplyShift: () => void
 
   constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocusedImageOptions) {
     this.options = Object.assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
-    this.debouncedAdjustFocus = debounce(this.applyShift, this.options.debounceTime)
+    this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
     if (this.options.focus) {
-      this.setFocus(this.options.focus.x, this.options.focus.y)
-    } else {
-      this.applyShift()
+      this.setFocusAttributes(this.options.focus.x, this.options.focus.y)
     }
     this.startListening()
+    // applyShift async to allow container styles to recalculate
+    setTimeout(() => this.applyShift(), 0)
   }
 
   public setFocus = (x: number, y: number) => {
-    this.img.setAttribute("data-focus-x", x.toString())
-    this.img.setAttribute("data-focus-y", y.toString())
+    this.setFocusAttributes(x, y)
     this.applyShift()
   }
 
@@ -89,8 +90,8 @@ export class FocusedImage {
     const hR = imageH / containerH
 
     // Reset max-width and -height
-    this.img.style.maxHeight = null
-    this.img.style.maxWidth = null
+    this.img.style.maxHeight = "initial"
+    this.img.style.maxWidth = "initial"
 
     // Minimize image while still filling space
     if (imageW > containerW && imageH > containerH) {
@@ -112,7 +113,7 @@ export class FocusedImage {
       return
     }
     this.listening = true
-    window.addEventListener("resize", this.debouncedAdjustFocus)
+    window.addEventListener("resize", this.debounceApplyShift)
   }
 
   public stopListening() {
@@ -120,12 +121,17 @@ export class FocusedImage {
       return
     }
     this.listening = false
-    window.removeEventListener("resize", this.debouncedAdjustFocus)
+    window.removeEventListener("resize", this.debounceApplyShift)
+  }
+
+  private setFocusAttributes = (x: number, y: number) => {
+    this.img.setAttribute("data-focus-x", x.toString())
+    this.img.setAttribute("data-focus-y", y.toString())
   }
 
   private setUpStyles() {
-    assignStyles(this.img, IMG_STYLES)
     assignStyles(this.container, CONTAINER_STYLES)
+    assignStyles(this.img, IMG_STYLES)
   }
 
   private checkForStaticPosition() {
