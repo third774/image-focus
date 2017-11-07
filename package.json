@@ -1,6 +1,6 @@
 {
   "name": "image-focus",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "",
   "keywords": [
     "responsive",
@@ -107,6 +107,7 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-svg": "^1.0.1",
+    "rollup-plugin-uglify-es": "0.0.1",
     "semantic-release": "^8.0.0",
     "ts-jest": "^21.0.0",
     "ts-loader": "^3.1.1",

@@ -2,6 +2,7 @@ import resolve from "rollup-plugin-node-resolve"
 import commonjs from "rollup-plugin-commonjs"
 import sourceMaps from "rollup-plugin-sourcemaps"
 import svg from "rollup-plugin-svg"
+import uglify from "rollup-plugin-uglify-es"
 
 import camelCase from "lodash.camelcase"
 
@@ -31,5 +32,6 @@ export default {
     svg(),
     // Resolve source maps to the original source
     sourceMaps(),
+    uglify(),
   ],
 }
