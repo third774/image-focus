@@ -46,18 +46,23 @@
       user-select: none;
     }
 
-    input {
+    #focus-picker-img {
+      max-width: 100%;
+    }
+
+    .form-group {
+      display: block;
+      margin-top: 12px;
+    }
+
+    .form-group input {
       width: 100%;
       font-size: 14px;
       font-family: monospace;
       box-sizing: border-box;
     }
 
-    p {
-      margin-bottom: 0;
-    }
-
-    h3 {
+    .instruction {
       margin-top: 0;
     }
   </style>
@@ -65,44 +70,48 @@
 
 <body>
   <div class="grid">
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <div>
+    <div class="focused-image-container">
       <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
   </div>
 
   <div class="image-focus-picker-container">
-    <h3>Drag to select focal point</h3>
-    <div class="image-focus-picker">
+    <h3 class="instruction">Drag to select focal point</h3>
+    <div>
       <img id="focus-picker-img" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0" data-focus-y="0">
     </div>
-    <p>Update image URL below:</p>
-    <input class="image-src" type="text" value="https://picsum.photos/2400/1400">
-    <p>Coordinates:</p>
-    <input class="coordinates" type="text" value="{x:  0.00, y:  0.00}">
+    <label class="form-group">
+      Update image URL below:
+      <input class="image-src" type="text" value="https://picsum.photos/2400/1400">
+    </label>
+    <label class="form-group">
+      Coordinates:
+      <input class="coordinates" type="text" readonly value="{x:  0.00, y:  0.00}">
+    </label>
   </div>
 </body>
 

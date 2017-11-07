@@ -2,7 +2,7 @@ import { FocusedImage, FocusPicker } from "../lib/main"
 
 const focusedImages: FocusedImage[] = []
 
-const startingFocus = { x: 0.81, y: -0.69 }
+const startingFocus = { x: 0, y: 0 }
 
 Array.prototype.forEach.call(document.querySelectorAll(".focused-image"), function(image: HTMLImageElement) {
   focusedImages.push(
