@@ -10,10 +10,8 @@ const IMG_STYLES = {
   position: "absolute",
   top: "0",
   right: "0",
-  maxHeight: "initial",
-  maxWidth: "initial",
-  height: "initial",
-  width: "initial",
+  bottom: "0",
+  left: "0",
 }
 
 const CONTAINER_STYLES = {
@@ -109,8 +107,8 @@ export class FocusedImage {
     const hR = imageH / containerH
 
     // Reset max-width and -height
-    this.img.style.maxHeight = "initial"
-    this.img.style.maxWidth = "initial"
+    this.img.style.maxHeight = null
+    this.img.style.maxWidth = null
 
     // Minimize image while still filling space
     if (imageW > containerW && imageH > containerH) {
