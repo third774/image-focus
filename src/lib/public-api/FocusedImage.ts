@@ -23,6 +23,7 @@ const CONTAINER_STYLES = {
 
 export interface FocusedImageOptions {
   debounceTime?: number
+  updateOnWindowResize?: boolean
   focus?: {
     x: number
     y: number
@@ -35,6 +36,7 @@ export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
 
 const DEFAULT_OPTIONS: FocusedImageOptions = {
   debounceTime: 17,
+  updateOnWindowResize: true,
 }
 
 export class FocusedImage {
@@ -52,7 +54,9 @@ export class FocusedImage {
     if (this.options.focus) {
       this.setFocusAttributes(this.options.focus.x, this.options.focus.y)
     }
-    this.startListening()
+    if (this.options.updateOnWindowResize) {
+      this.startListening()
+    }
     // applyShift async to allow container styles to recalculate
     setTimeout(() => this.applyShift(), 0)
   }
