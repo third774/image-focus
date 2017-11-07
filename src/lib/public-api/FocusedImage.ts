@@ -1,4 +1,4 @@
-import "./polyfills"
+import "../polyfills"
 import { Cancelable } from "lodash"
 
 import { debounce } from "../helpers/debounce"
