@@ -1,6 +1,6 @@
 {
   "name": "image-focus",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "keywords": [
     "responsive",
@@ -30,7 +30,7 @@
     "clean": "rimraf dist && rimraf compiled",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "npm run clean && tsc && rollup -c rollup.config.ts && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src/lib",
+    "build": "npm run clean && tsc && copyfiles -f src/lib/retina.svg compiled && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal src/lib",
     "start": "npm run clean && webpack-dev-server --open",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -87,6 +87,7 @@
     "@types/node": "^8.0.0",
     "colors": "^1.1.2",
     "commitizen": "^2.9.6",
+    "copyfiles": "^1.2.0",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.1",
     "cz-conventional-changelog": "^2.0.0",

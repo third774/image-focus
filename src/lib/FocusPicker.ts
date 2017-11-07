@@ -4,7 +4,7 @@ import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
 
-import { retina } from "./retina"
+import retina from "./retina.svg"
 
 const IMAGE_STYLES = {
   display: "block",
@@ -37,7 +37,7 @@ export interface FocusPickerOptions {
 export class FocusPicker {
   container: HTMLElement
   img: HTMLImageElement
-  retina: SVGElement
+  retina: HTMLImageElement
   isDragging: boolean
   focusX: number
   focusY: number
@@ -85,13 +85,9 @@ export class FocusPicker {
         throw new Error("No image found within above container")
       }
     }
-    this.retina = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-    this.retina.setAttribute("width", "20")
-    this.retina.setAttribute("height", "20")
-    this.retina.setAttribute("viewBox", "0 0 20 20")
-
-    this.retina.innerHTML = retina
-
+    this.retina = document.createElement("img")
+    this.retina.src = retina
+    this.retina.draggable = false
     this.container.appendChild(this.retina)
   }
 
