@@ -22,8 +22,23 @@ const CONTAINER_STYLES = {
 }
 
 export interface FocusedImageOptions {
+  /**
+   * Time in MS before debounceApplyShift fires
+   *
+   * Defaults to `17`
+   */
   debounceTime?: number
+  /**
+   * Should window resize events fire debounceApplyShift?
+   *
+   * Defaults to `true`
+   */
   updateOnWindowResize?: boolean
+  /**
+   * Focus coordinates to initialize with
+   *
+   * Default value is `undefined`
+   */
   focus?: {
     x: number
     y: number
