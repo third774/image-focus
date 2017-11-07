@@ -1,10 +1,10 @@
-import { assignStyles } from "./helpers/assignStyles"
-import { firstNumberIn } from "./helpers/firstNumberIn"
-import { noop } from "./helpers/noop"
+import { assignStyles } from "../helpers/assignStyles"
+import { firstNumberIn } from "../helpers/firstNumberIn"
+import { noop } from "../helpers/noop"
 
-import "./polyfills"
+import "../polyfills"
 
-import { retina } from "./retina"
+import { retina } from "../retina"
 
 const IMAGE_STYLES = {
   display: "block",

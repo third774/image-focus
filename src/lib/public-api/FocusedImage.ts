@@ -1,8 +1,8 @@
 import "./polyfills"
 import { Cancelable } from "lodash"
 
-import { debounce } from "./helpers/debounce"
-import { assignStyles } from "./helpers/assignStyles"
+import { debounce } from "../helpers/debounce"
+import { assignStyles } from "../helpers/assignStyles"
 
 const IMG_STYLES = {
   minHeight: "100%",
