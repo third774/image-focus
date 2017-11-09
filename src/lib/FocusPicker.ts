@@ -111,6 +111,7 @@ export class FocusPicker {
   }
 
   private startDragging = (e: MouseEvent | TouchEvent) => {
+    e.preventDefault()
     this.isDragging = true
     e instanceof MouseEvent
       ? this.updateCoordinates(e.clientX, e.clientY)
