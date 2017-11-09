@@ -1,5 +1,4 @@
 import "./polyfills"
-import { Cancelable } from "lodash"
 
 import { debounce } from "./helpers/debounce"
 import { assignStyles } from "./helpers/assignStyles"
@@ -80,13 +79,6 @@ export class FocusedImage {
   }
 
   public applyShift = () => {
-    // Check a couple things to alert at dev time of problems
-    if (!this.hasReferences()) {
-      // bail if no references
-      return
-    }
-    this.checkForStaticPosition()
-
     const imageW = this.img.naturalWidth
     const imageH = this.img.naturalHeight
     const containerW = this.container.getBoundingClientRect().width
@@ -149,33 +141,6 @@ export class FocusedImage {
   private setUpStyles() {
     assignStyles(this.container, CONTAINER_STYLES)
     assignStyles(this.img, IMG_STYLES)
-  }
-
-  private checkForStaticPosition() {
-    if (this.container.style.position === "static") {
-      console.warn(`
-This container has a static position. The image will not
-be contained properly unless it has a non-static position
-such as 'absolute' or 'relative'.`)
-    }
-  }
-
-  private hasReferences() {
-    let hasReferences = true
-    if (!this.img) {
-      hasReferences = false
-      console.error(`
-Reference to image not found. Make sure the container
-has an image inside it.
-`)
-    }
-    if (!this.container) {
-      hasReferences = false
-      console.error(`
-Reference to container not found. Not sure how that happened.
-`)
-    }
-    return hasReferences
   }
 
   private setUpElementReferences(initializationNode: HTMLElement | HTMLImageElement) {
