@@ -3,6 +3,7 @@ import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
 
 import retina from "./retina.svg"
+import { assign } from "./helpers/assign"
 
 const IMAGE_STYLES = {
   display: "block",
@@ -53,10 +54,7 @@ export class FocusPicker {
   private options: FocusPickerOptions
 
   constructor(initializationNode: HTMLImageElement, options: FocusPickerOptions) {
-    this.options = {
-      ...DEFAULT_OPTIONS,
-      ...options,
-    }
+    this.options = assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.bindContainerEvents()
     this.setUpImageAttributes()

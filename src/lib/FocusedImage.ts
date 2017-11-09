@@ -56,11 +56,8 @@ export class FocusedImage {
   listening: boolean
   debounceApplyShift: () => void
 
-  constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocusedImageOptions) {
-    this.options = {
-      ...DEFAULT_OPTIONS,
-      ...options,
-    }
+  constructor(private initializationNode: HTMLImageElement, options?: FocusedImageOptions) {
+    this.options = assign(DEFAULT_OPTIONS, options)
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
@@ -144,18 +141,9 @@ export class FocusedImage {
     assignStyles(this.img, IMG_STYLES)
   }
 
-  private setUpElementReferences(initializationNode: HTMLElement | HTMLImageElement) {
-    if (initializationNode.nodeName === "IMG") {
-      this.img = initializationNode as HTMLImageElementWithFocalPoint
-      this.container = initializationNode.parentElement as HTMLElement
-    } else {
-      this.container = initializationNode as HTMLElement
-      this.img = initializationNode.querySelector("img") as HTMLImageElementWithFocalPoint
-      if (!this.img) {
-        console.error(initializationNode)
-        throw new Error("No image found within above container")
-      }
-    }
+  private setUpElementReferences(initializationNode: HTMLImageElement) {
+    this.img = initializationNode as HTMLImageElementWithFocalPoint
+    this.container = initializationNode.parentElement
     if (this.img.__focal_point_instance__) {
       this.img.__focal_point_instance__.stopListening()
     }
