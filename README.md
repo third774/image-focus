@@ -3,7 +3,7 @@ A dependency free utility for cropping images based on a focal point ~2.6kB gzip
 
 **NOTE: This project is not ready for release yet. API's are subject to change**
 
-[Check out the demo](https://stackblitz.com/edit/image-focus)
+[Check out the demo](https://image-focus.stackblitz.com) and then [play with editing it](https://stackblitz.com/edit/image-focus)
 
 ## Docs
 
