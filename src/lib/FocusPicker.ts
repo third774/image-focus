@@ -1,4 +1,3 @@
-import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
 import { assign } from "./helpers/assign"
@@ -70,9 +69,9 @@ export class FocusPicker {
   }
 
   private assignStyles() {
-    assignStyles(this.img, IMAGE_STYLES)
-    assignStyles(this.retina, RETINA_STYLES)
-    assignStyles(this.container, CONTAINER_STYLES)
+    assign(this.img.style, IMAGE_STYLES)
+    assign(this.retina.style, RETINA_STYLES)
+    assign(this.container.style, CONTAINER_STYLES)
   }
 
   private initailizeFocusCoordinates() {
@@ -100,12 +99,19 @@ export class FocusPicker {
 
   private bindContainerEvents() {
     this.container.addEventListener("mousedown", this.startDragging)
-    this.container.addEventListener("touchstart", this.startDragging)
     this.container.addEventListener("mousemove", this.handleMove)
-    this.container.addEventListener("touchmove", this.handleMove)
     this.container.addEventListener("mouseup", this.stopDragging)
     this.container.addEventListener("mouseleave", this.stopDragging)
     this.container.addEventListener("touchend", this.stopDragging)
+
+    // temporarily cast config objs until this issue is resolved
+    // https://github.com/Microsoft/TypeScript/issues/9548
+    this.container.addEventListener("touchstart", this.startDragging, {
+      passive: true,
+    } as any)
+    this.container.addEventListener("touchmove", this.handleMove, {
+      passive: true,
+    } as any)
   }
 
   private startDragging = (e: MouseEvent | TouchEvent) => {

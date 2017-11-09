@@ -1,5 +1,4 @@
 import { debounce } from "./helpers/debounce"
-import { assignStyles } from "./helpers/assignStyles"
 import { assign } from "./helpers/assign"
 
 const IMG_STYLES = {
@@ -138,8 +137,8 @@ export class FocusedImage {
   }
 
   private setUpStyles() {
-    assignStyles(this.container, CONTAINER_STYLES)
-    assignStyles(this.img, IMG_STYLES)
+    assign(this.container.style, CONTAINER_STYLES)
+    assign(this.img.style, IMG_STYLES)
   }
 
   private setUpElementReferences(initializationNode: HTMLImageElement) {
