@@ -1,5 +1,3 @@
-import "./polyfills"
-
 import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
@@ -55,7 +53,10 @@ export class FocusPicker {
   private options: FocusPickerOptions
 
   constructor(initializationNode: HTMLImageElement, options: FocusPickerOptions) {
-    this.options = Object.assign(DEFAULT_OPTIONS, options)
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...options,
+    }
     this.setUpElementReferences(initializationNode)
     this.bindContainerEvents()
     this.setUpImageAttributes()

@@ -1,5 +1,3 @@
-import "./polyfills"
-
 import { debounce } from "./helpers/debounce"
 import { assignStyles } from "./helpers/assignStyles"
 
@@ -59,7 +57,10 @@ export class FocusedImage {
   debounceApplyShift: () => void
 
   constructor(private initializationNode: HTMLElement | HTMLImageElement, options?: FocusedImageOptions) {
-    this.options = Object.assign(DEFAULT_OPTIONS, options)
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...options,
+    }
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)

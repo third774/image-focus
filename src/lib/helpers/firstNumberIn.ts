@@ -1,5 +1,7 @@
 export function firstNumberIn(values: (string | number)[]): number {
-  return values
-    .map(value => (typeof value === "string" ? parseFloat(value) : value))
-    .find(value => typeof value === "number")
+  for (let i = 0; i < values.length; i++) {
+    const value = values[i]
+    const num = typeof value === "string" ? parseFloat(value) : value
+    if (typeof num === "number") return num
+  }
 }
