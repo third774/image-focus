@@ -1,9 +1,9 @@
 import { assignStyles } from "./helpers/assignStyles"
 import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
+import { assign } from "./helpers/assign"
 
 import retina from "./retina.svg"
-import { assign } from "./helpers/assign"
 
 const IMAGE_STYLES = {
   display: "block",

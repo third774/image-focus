@@ -1,5 +1,6 @@
 import { debounce } from "./helpers/debounce"
 import { assignStyles } from "./helpers/assignStyles"
+import { assign } from "./helpers/assign"
 
 const IMG_STYLES = {
   minHeight: "100%",
