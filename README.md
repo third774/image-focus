@@ -1,5 +1,5 @@
 # image-focus
-A dependency free utility for cropping images based on a focal point ~3.02kB gzipped
+A dependency free utility for cropping images based on a focal point ~2.6kB gzipped
 
 **NOTE: This project is not ready for release yet. API's are subject to change**
 
