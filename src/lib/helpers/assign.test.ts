@@ -1,9 +1,6 @@
 import { assign } from "./assign"
 import { DEFAULT_ENCODING } from "crypto"
 
-/**
- * Dummy test
- */
 describe("assign", () => {
   it("should shallow merge options from right to left", () => {
     const DEFAULT_OPTIONS = {
