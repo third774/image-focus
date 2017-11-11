@@ -1,5 +1,4 @@
 import { assign } from "./assign"
-import { DEFAULT_ENCODING } from "crypto"
 
 describe("assign", () => {
   it("should shallow merge options from right to left", () => {
