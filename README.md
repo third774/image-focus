@@ -15,7 +15,7 @@ A dependency free utility for cropping images based on a focus point ~2.6kB gzip
 npm install image-focus
 ```
 
-`Focus` Coordinates range between `-1` and `1` for both `x` and `y` axes. The [`FocusPicker`](#FocusPicker) class will help enable users to select the focus point to be used with an image.
+`Focus` Coordinates range between `-1` and `1` for both `x` and `y` axes. The [`FocusPicker`](#focuspicker) class will help enable users to select the focus point to be used with an image.
 
 Additionally, because the `FocusedImage` is positioned absolutely so it can shift as needed, its container needs to manage its own height and width. If you aren't seeing an image appear at all, it is likely that the div's height is fully collapsed.
 
