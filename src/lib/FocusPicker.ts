@@ -1,6 +1,7 @@
 import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
 import { assign } from "./helpers/assign"
+import { Focus, OnFocusChange, FocusPickerOptions } from "./interfaces"
 
 import retina from "./retina.svg"
 
@@ -25,24 +26,6 @@ const DEFAULT_OPTIONS: FocusPickerOptions = {
   retina,
 }
 
-export interface FocusPickerOptions {
-  /**
-   * callback for when the focus point changes
-   */
-  onChange?: (x: number, y: number) => void
-  /**
-   * focus point to initialize with
-   */
-  focus?: {
-    x: number
-    y: number
-  }
-  /**
-   * src attribute for the retina
-   */
-  retina?: string
-}
-
 export class FocusPicker {
   container: HTMLElement
   img: HTMLImageElement
@@ -52,8 +35,8 @@ export class FocusPicker {
   private isDragging: boolean
   private options: FocusPickerOptions
 
-  constructor(initializationNode: HTMLImageElement, options: FocusPickerOptions) {
-    this.options = assign(DEFAULT_OPTIONS, options)
+  constructor(initializationNode: HTMLImageElement, options?: FocusPickerOptions) {
+    this.options = assign(DEFAULT_OPTIONS, options || {})
     this.setUpElementReferences(initializationNode)
     this.bindContainerEvents()
     this.setUpImageAttributes()
@@ -167,13 +150,13 @@ export class FocusPicker {
     // Calculate FocusPoint coordinates
     const offsetX = clientX - left
     const offsetY = clientY - top
-    const focusX = (offsetX / width - 0.5) * 2
-    const focusY = (offsetY / height - 0.5) * -2
+    this.focusX = (offsetX / width - 0.5) * 2
+    this.focusY = (offsetY / height - 0.5) * -2
 
     this.updateRetinaPosition({ offsetX, offsetY })
 
-    this.img.setAttribute("data-focus-x", focusX.toString())
-    this.img.setAttribute("data-focus-y", focusY.toString())
-    this.options.onChange(focusX, focusY)
+    this.img.setAttribute("data-focus-x", this.focusX.toString())
+    this.img.setAttribute("data-focus-y", this.focusY.toString())
+    this.options.onChange({ x: this.focusX, y: this.focusY })
   }
 }

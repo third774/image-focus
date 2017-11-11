@@ -1,5 +1,6 @@
 import { debounce } from "./helpers/debounce"
 import { assign } from "./helpers/assign"
+import { Focus, FocusedImageOptions } from "./interfaces"
 
 const IMG_STYLES = {
   minHeight: "100%",
@@ -16,34 +17,6 @@ const CONTAINER_STYLES = {
   overflow: "hidden",
 }
 
-export interface FocusedImageOptions {
-  /**
-   * Time in MS before debounceApplyShift fires
-   *
-   * Defaults to `17`
-   */
-  debounceTime?: number
-  /**
-   * Should window resize events fire debounceApplyShift?
-   *
-   * Defaults to `true`
-   */
-  updateOnWindowResize?: boolean
-  /**
-   * Focus coordinates to initialize with
-   *
-   * Default value is `undefined`
-   */
-  focus?: {
-    x: number
-    y: number
-  }
-}
-
-export interface HTMLImageElementWithFocalPoint extends HTMLImageElement {
-  __focal_point_instance__: FocusedImage
-}
-
 const DEFAULT_OPTIONS: FocusedImageOptions = {
   debounceTime: 17,
   updateOnWindowResize: true,
@@ -52,12 +25,12 @@ const DEFAULT_OPTIONS: FocusedImageOptions = {
 export class FocusedImage {
   options: FocusedImageOptions
   container: HTMLElement
-  img: HTMLImageElementWithFocalPoint
+  img: HTMLImageElement
   listening: boolean
   debounceApplyShift: () => void
 
   constructor(private initializationNode: HTMLImageElement, options?: FocusedImageOptions) {
-    this.options = assign(DEFAULT_OPTIONS, options)
+    this.options = assign(DEFAULT_OPTIONS, options || {})
     this.setUpElementReferences(initializationNode)
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
@@ -71,8 +44,8 @@ export class FocusedImage {
     setTimeout(() => this.applyShift(), 0)
   }
 
-  public setFocus = (x: number, y: number) => {
-    this.setFocusAttributes(x, y)
+  public setFocus = (focus: { x: number; y: number }) => {
+    this.setFocusAttributes(focus.x, focus.y)
     this.applyShift()
   }
 
@@ -142,12 +115,12 @@ export class FocusedImage {
   }
 
   private setUpElementReferences(initializationNode: HTMLImageElement) {
-    this.img = initializationNode as HTMLImageElementWithFocalPoint
+    this.img = initializationNode
     this.container = initializationNode.parentElement
-    if (this.img.__focal_point_instance__) {
-      this.img.__focal_point_instance__.stopListening()
+    if (this.img["__focused_image_instance__"]) {
+      this.img["__focused_image_instance__"].stopListening()
     }
-    this.img.__focal_point_instance__ = this
+    this.img["__focused_image_instance__"] = this
     this.img.onload = this.applyShift
   }
 
