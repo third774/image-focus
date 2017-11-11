@@ -15,11 +15,15 @@ A dependency free utility for cropping images based on a focal point ~2.6kB gzip
 npm install image-focus
 ```
 
-Coordinates range between `-1` and `1` for both `x` and `y` axes. The `FocalPicker` class will help enable users to select the focal point to be used with an image.
+`Focus` Coordinates range between `-1` and `1` for both `x` and `y` axes. The [`FocalPicker`](#FocalPicker) class will help enable users to select the focal point to be used with an image.
+
+Additionally, because the `FocusedImage` is positioned absolutely so it can shift as needed, its container needs to manage its own height and width. If you aren't seeing an image appear at all, it is likely that the div's height is fully collapsed.
+
+### FocusedImage
 
 There are two ways to supply the coordinates when initializing the `FocusedImage` class
 
-### Data Tags
+#### Data Tags
 
 ```html
 <div class="focused-image-container">
@@ -34,7 +38,7 @@ const img = document.querySelector('.focused-image') as HTMLImageElement
 const focusedImage = new FocusedImage(img)
 ```
 
-### Using `focus` Option
+#### Using `focus` Option
 
 ```html
 <div class="focused-image-container">
@@ -51,6 +55,21 @@ const focusedImage = new FocusedImage(img, {
     x: 0.34,
     y: -0.21
   }
+})
+```
+
+### FocusPicker
+
+Provide an `onChange` callback that will receive a `Focus` object that has `x` and `y` properties for the newly selected coordinates. Optionally supply a `focus` to initialize with, or a `retina` src to use instead of the default white ring SVG.
+
+```ts
+const focusPickerEl = document.getElementById("focus-picker-img") as HTMLImageElement
+const focusPicker = new FocusPicker(focusPickerEl, {
+  onChange: focus => {
+    focusedImages.forEach(focusedImage => focusedImage.setFocus(focus))
+    updateCoordinatesValue(focus)
+  },
+  focus: startingFocus,
 })
 ```
 
