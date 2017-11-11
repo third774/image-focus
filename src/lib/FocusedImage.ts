@@ -147,6 +147,6 @@ export class FocusedImage {
   }
 }
 
-export function initFocusedImage(el) {
+export function init(el) {
   return new FocusedImage(el)
 }
