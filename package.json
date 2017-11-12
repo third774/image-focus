@@ -1,6 +1,6 @@
 {
   "name": "image-focus",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A dependency free utility for cropping images based on a focal point ~2.6kB gzipped",
   "keywords": [
     "responsive",
@@ -68,8 +68,7 @@
       "js"
     ],
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-        "<rootDir>/test/assetsTransformer.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/assetsTransformer.js"
     },
     "coveragePathIgnorePatterns": [
       "/node_modules/",
