@@ -71,6 +71,14 @@ const focusPicker = new FocusPicker(focusPickerEl, {
 })
 ```
 
+## What if I'm not using npm and a build process?
+
+That's okay! [unpkg](https://unpkg.com/) has you covered. Just add this script tag to your page and the `image-focus` module is exposed in the global namespace under `window.imageFocus`.
+
+```html
+<script src="https://unpkg.com/image-focus"></script>
+```
+
 ## Attributions
 
 This project was largely inspired by and adapted from [jquery-focuspoint](https://github.com/jonom/jquery-focuspoint) by [jonom](https://github.com/jonom) and used [typescript-library-starter](https://github.com/alexjoverm/typescript-library-starter) to scaffold the build process.
