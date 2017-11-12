@@ -42,13 +42,14 @@ export class FocusPicker {
     this.setUpImageAttributes()
     this.assignStyles()
     this.initailizeFocusCoordinates()
-    setTimeout(() => this.updateRetinaPositionFromFocus(), 0)
+    setTimeout(() => this.setFocus({ x: this.focusX, y: this.focusY }), 0)
   }
 
-  public setFocus = (x, y) => {
-    this.focusX = x
-    this.focusY = y
+  public setFocus = (focus: Focus) => {
+    this.focusX = focus.x
+    this.focusY = focus.y
     this.updateRetinaPositionFromFocus()
+    this.options.onChange(focus)
   }
 
   private assignStyles() {
@@ -89,12 +90,8 @@ export class FocusPicker {
 
     // temporarily cast config objs until this issue is resolved
     // https://github.com/Microsoft/TypeScript/issues/9548
-    this.container.addEventListener("touchstart", this.startDragging, {
-      passive: true,
-    } as any)
-    this.container.addEventListener("touchmove", this.handleMove, {
-      passive: true,
-    } as any)
+    this.container.addEventListener("touchstart", this.startDragging, { passive: true } as any)
+    this.container.addEventListener("touchmove", this.handleMove, { passive: true } as any)
   }
 
   private startDragging = (e: MouseEvent | TouchEvent) => {
