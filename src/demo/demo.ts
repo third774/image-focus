@@ -8,7 +8,7 @@ const dataAttributes = document.getElementById("data-attributes") as HTMLInputEl
 const focusedImageElements = document.querySelectorAll(".focused-image") as NodeListOf<HTMLImageElement>
 
 // Set our starting focus
-const focus: Focus = { x: 0.75, y: 0 }
+const focus: Focus = { x: 0, y: 0 }
 
 // Iterate over images and instantiate FocusedImage from each
 // pushing into an array for updates later
