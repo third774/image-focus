@@ -146,7 +146,3 @@ export class FocusedImage {
     return focusOffset * -100 / containerSize + "%"
   }
 }
-
-export function init(el) {
-  return new FocusedImage(el)
-}
