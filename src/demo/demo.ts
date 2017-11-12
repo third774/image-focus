@@ -8,18 +8,7 @@ const dataAttributes = document.getElementById("data-attributes") as HTMLInputEl
 const focusedImageElements = document.querySelectorAll(".focused-image") as NodeListOf<HTMLImageElement>
 
 // Set our starting focus
-const focus: Focus = { x: 0, y: 0 }
-
-// Create helper function for updating cooridates and dataAttributes inputs
-function updateInputs(newFocus: Focus) {
-  const x = newFocus.x.toFixed(2)
-  const y = newFocus.y.toFixed(2)
-  coordinates.value = `{x: ${x}, y: ${y}}`
-  dataAttributes.value = `data-focus-x="${x}" data-focus-y="${y}"`
-}
-
-// Update inputs using starting focus
-updateInputs(focus)
+const focus: Focus = { x: 0.75, y: 0 }
 
 // Iterate over images and instantiate FocusedImage from each
 // pushing into an array for updates later
@@ -39,7 +28,10 @@ Array.prototype.forEach.call(focusedImageElements, (imageEl: HTMLImageElement) =
 const focusPicker = new FocusPicker(focusPickerEl, {
   focus,
   onChange: (newFocus: Focus) => {
-    updateInputs(newFocus)
+    const x = newFocus.x.toFixed(2)
+    const y = newFocus.y.toFixed(2)
+    coordinates.value = `{x: ${x}, y: ${y}}`
+    dataAttributes.value = `data-focus-x="${x}" data-focus-y="${y}"`
     focusedImages.forEach(focusedImage => focusedImage.setFocus(newFocus))
   },
 })
