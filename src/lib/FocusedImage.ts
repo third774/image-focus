@@ -33,6 +33,7 @@ export class FocusedImage {
   constructor(private initializationNode: HTMLImageElement, options?: FocusedImageOptions) {
     this.options = assign(DEFAULT_OPTIONS, options || {})
     this.setUpElementReferences(initializationNode)
+    this.setUpInstance()
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
     if (this.options.focus) {
@@ -115,11 +116,15 @@ export class FocusedImage {
   private setUpElementReferences(initializationNode: HTMLImageElement) {
     this.img = initializationNode
     this.container = initializationNode.parentElement
+  }
+
+  private setUpInstance() {
     if (this.img["__focused_image_instance__"]) {
       this.img["__focused_image_instance__"].stopListening()
+      this.img.removeEventListener("load", this.applyShift)
     }
     this.img["__focused_image_instance__"] = this
-    this.img.onload = this.applyShift
+    this.img.addEventListener("load", this.applyShift)
   }
 
   // Calculate the new left/top values of an image
