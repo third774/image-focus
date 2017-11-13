@@ -32,7 +32,7 @@
     "prebuild": "rimraf dist",
     "build": "npm run clean && tsc && copyfiles -f src/lib/retina.svg compiled && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal src/lib",
     "start": "npm run clean && webpack-dev-server --open",
-    "test": "jest",
+    "test": "npm run clean && jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
