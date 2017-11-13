@@ -35,7 +35,7 @@ export class FocusedImage {
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
     if (this.options.focus) {
-      this.setFocusAttributes(this.options.focus.x, this.options.focus.y)
+      this.setFocusAttributes(this.options.focus)
     }
     if (this.options.updateOnWindowResize) {
       this.startListening()
@@ -44,8 +44,8 @@ export class FocusedImage {
     setTimeout(() => this.applyShift(), 0)
   }
 
-  public setFocus = (focus: { x: number; y: number }) => {
-    this.setFocusAttributes(focus.x, focus.y)
+  public setFocus = (focus: Focus) => {
+    this.setFocusAttributes(focus)
     this.applyShift()
   }
 
@@ -104,9 +104,9 @@ export class FocusedImage {
     window.removeEventListener("resize", this.debounceApplyShift)
   }
 
-  private setFocusAttributes = (x: number, y: number) => {
-    this.img.setAttribute("data-focus-x", x.toString())
-    this.img.setAttribute("data-focus-y", y.toString())
+  private setFocusAttributes = (focus: Focus) => {
+    this.img.setAttribute("data-focus-x", focus.x.toString())
+    this.img.setAttribute("data-focus-y", focus.y.toString())
   }
 
   private setUpStyles() {
