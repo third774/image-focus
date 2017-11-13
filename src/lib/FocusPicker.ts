@@ -30,8 +30,7 @@ export class FocusPicker {
   container: HTMLElement
   img: HTMLImageElement
   retina: HTMLImageElement
-  focusX: number
-  focusY: number
+  focus: Focus
   private isDragging: boolean
   private options: FocusPickerOptions
 
@@ -42,12 +41,11 @@ export class FocusPicker {
     this.setUpImageAttributes()
     this.assignStyles()
     this.initailizeFocusCoordinates()
-    setTimeout(() => this.setFocus({ x: this.focusX, y: this.focusY }), 0)
+    this.setFocus(this.focus)
   }
 
   public setFocus = (focus: Focus) => {
-    this.focusX = focus.x
-    this.focusY = focus.y
+    this.focus = focus
     this.updateRetinaPositionFromFocus()
     this.options.onChange(focus)
   }
@@ -59,17 +57,19 @@ export class FocusPicker {
   }
 
   private initailizeFocusCoordinates() {
-    this.focusX = firstNumberIn([
+    const x = firstNumberIn([
       this.options.focus && this.options.focus.x,
       this.img.getAttribute("data-focus-x"),
       0,
     ])
 
-    this.focusY = firstNumberIn([
+    const y = firstNumberIn([
       this.options.focus && this.options.focus.y,
       this.img.getAttribute("data-focus-y"),
       0,
     ])
+
+    this.focus = { x, y }
   }
 
   private setUpElementReferences(initializationNode: HTMLImageElement) {
@@ -126,8 +126,8 @@ export class FocusPicker {
 
   private calculateOffsetFromFocus = () => {
     const { width, height } = this.img.getBoundingClientRect()
-    const offsetX = width * (this.focusX / 2 + 0.5)
-    const offsetY = height * (this.focusY / -2 + 0.5)
+    const offsetX = width * (this.focus.x / 2 + 0.5)
+    const offsetY = height * (this.focus.y / -2 + 0.5)
     return { offsetX, offsetY }
   }
 
@@ -147,13 +147,14 @@ export class FocusPicker {
     // Calculate FocusPoint coordinates
     const offsetX = clientX - left
     const offsetY = clientY - top
-    this.focusX = (offsetX / width - 0.5) * 2
-    this.focusY = (offsetY / height - 0.5) * -2
+    const x = (offsetX / width - 0.5) * 2
+    const y = (offsetY / height - 0.5) * -2
+    this.focus = { x, y }
 
     this.updateRetinaPosition({ offsetX, offsetY })
 
-    this.img.setAttribute("data-focus-x", this.focusX.toString())
-    this.img.setAttribute("data-focus-y", this.focusY.toString())
-    this.options.onChange({ x: this.focusX, y: this.focusY })
+    this.img.setAttribute("data-focus-x", x.toString())
+    this.img.setAttribute("data-focus-y", y.toString())
+    this.options.onChange(this.focus)
   }
 }
