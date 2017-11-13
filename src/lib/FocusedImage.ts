@@ -26,7 +26,7 @@ export class FocusedImage {
   options: FocusedImageOptions
   container: HTMLElement
   img: HTMLImageElement
-  listening: boolean
+  listening: boolean = false
   debounceApplyShift: () => void
 
   constructor(private initializationNode: HTMLImageElement, options?: FocusedImageOptions) {
