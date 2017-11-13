@@ -23,6 +23,7 @@ const DEFAULT_OPTIONS: FocusedImageOptions = {
 }
 
 export class FocusedImage {
+  focus: Focus
   options: FocusedImageOptions
   container: HTMLElement
   img: HTMLImageElement
@@ -35,27 +36,29 @@ export class FocusedImage {
     this.setUpStyles()
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
     if (this.options.focus) {
-      this.setFocusAttributes(this.options.focus)
+      this.focus = this.options.focus
+    } else {
+      this.focus = {
+        x: parseFloat(this.img.getAttribute("data-focus-x")),
+        y: parseFloat(this.img.getAttribute("data-focus-y")),
+      }
     }
     if (this.options.updateOnWindowResize) {
       this.startListening()
     }
-    // applyShift async to allow container styles to recalculate
-    setTimeout(() => this.applyShift(), 0)
+    this.setFocus(this.focus)
   }
 
   public setFocus = (focus: Focus) => {
-    this.setFocusAttributes(focus)
+    this.focus = focus
+    this.img.setAttribute("data-focus-x", focus.x.toString())
+    this.img.setAttribute("data-focus-y", focus.y.toString())
     this.applyShift()
   }
 
   public applyShift = () => {
-    const imageW = this.img.naturalWidth
-    const imageH = this.img.naturalHeight
-    const containerW = this.container.getBoundingClientRect().width
-    const containerH = this.container.getBoundingClientRect().height
-    const focusX = parseFloat(this.img.getAttribute("data-focus-x") as string)
-    const focusY = parseFloat(this.img.getAttribute("data-focus-y") as string)
+    const { naturalWidth: imageW, naturalHeight: imageH } = this.img
+    const { width: containerW, height: containerH } = this.container.getBoundingClientRect()
 
     // Amount position will be shifted
     let hShift = "0"
@@ -79,9 +82,9 @@ export class FocusedImage {
     }
 
     if (wR > hR) {
-      hShift = this.calcShift(hR, containerW, imageW, focusX)
+      hShift = this.calcShift(hR, containerW, imageW, this.focus.x)
     } else if (wR < hR) {
-      vShift = this.calcShift(wR, containerH, imageH, focusY, true)
+      vShift = this.calcShift(wR, containerH, imageH, this.focus.y, true)
     }
 
     this.img.style.top = vShift
@@ -102,11 +105,6 @@ export class FocusedImage {
     }
     this.listening = false
     window.removeEventListener("resize", this.debounceApplyShift)
-  }
-
-  private setFocusAttributes = (focus: Focus) => {
-    this.img.setAttribute("data-focus-x", focus.x.toString())
-    this.img.setAttribute("data-focus-y", focus.y.toString())
   }
 
   private setUpStyles() {
