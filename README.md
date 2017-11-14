@@ -17,8 +17,6 @@ A dependency free utility for cropping images based on a focus point ~2.6kB gzip
 
 `Focus` Coordinates range between `-1` and `1` for both `x` and `y` axes. The [`FocusPicker`](#focuspicker) class will help enable users to select the focus point to be used with an image.
 
-Additionally, because the `FocusedImage` is positioned absolutely so it can shift as needed, its container needs to manage its own height and width. If you aren't seeing an image appear at all, it is likely that the div's height is fully collapsed.
-
 ### FocusedImage
 
 There are two ways to supply the coordinates when initializing the `FocusedImage` class
@@ -63,15 +61,23 @@ const focusedImage = new FocusedImage(img, {
 Provide an `onChange` callback that will receive a `Focus` object that has `x` and `y` properties for the newly selected coordinates. Optionally supply a `focus` to initialize with, or a `retina` src to use instead of the default white ring SVG.
 
 ```ts
+import {FocusedImage, FocusPicker} from "image-focus"
+
+const imgEl = document.getElementById("focused-image") as HTMLImageElement
+const focusedImage = new FocusedImage(imgEl)
+
 const focusPickerEl = document.getElementById("focus-picker-img") as HTMLImageElement
 const focusPicker = new FocusPicker(focusPickerEl, {
-  onChange: focus => {
-    focusedImages.forEach(focusedImage => focusedImage.setFocus(focus))
-    updateCoordinatesValue(focus)
-  },
+  onChange: focus => focusedImage.setFocus(focus),
   focus: startingFocus,
 })
 ```
+
+## What's going on?
+
+The `<img/>` element is being set to `position: absolute;` and having its `top` and `left` properties adjusted based on some calculations using the image and parent containers' aspect ratios and dimensions. The `<img/>`'s parent container gets set to `position: relative;` and `overflow: hidden;` to create the effect. There are a few other inline styles that get applied, so if anything appears to be behaving unexpectedly, be sure to check that the inline styles on both the `<img/>` and its parent aren't being overridden by CSS on your page (especially from rules using `!important`).
+
+Additionally, because the `FocusedImage` is positioned absolutely so it can shift as needed, its container needs to manage its own height and width. If you aren't seeing an image appear at all, it is likely that the parent div's `height` is fully collapsed.
 
 ## What if I'm not using npm and a build process?
 
@@ -79,6 +85,13 @@ That's okay! [unpkg](https://unpkg.com/) has you covered. Just add this script t
 
 ```html
 <script src="https://unpkg.com/image-focus"></script>
+```
+
+Then in some script that loads after the above script tag:
+
+```js
+var imgEl = document.querySelector('img.focused-image');
+var focusedImage = new imageFocus.FocusedImage(imgEl, {x: 0.25, y: -0.3});
 ```
 
 ## Attributions
