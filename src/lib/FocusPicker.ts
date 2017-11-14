@@ -8,12 +8,12 @@ import retina from "./retina.svg"
 const IMAGE_STYLES = {
   display: "block",
   maxWidth: "100%",
+  touchAction: "none",
 }
 
 const CONTAINER_STYLES = {
   position: "relative",
   overflow: "hidden",
-  touchAction: "none",
 }
 
 const RETINA_STYLES = {
