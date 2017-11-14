@@ -13,6 +13,7 @@ const IMAGE_STYLES = {
 const CONTAINER_STYLES = {
   position: "relative",
   overflow: "hidden",
+  touchAction: "none",
 }
 
 const RETINA_STYLES = {
