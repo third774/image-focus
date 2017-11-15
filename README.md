@@ -1,8 +1,6 @@
 # image-focus
 A dependency free utility for cropping images based on a focus point ~2.6kB gzipped
 
-[![NPM](https://nodei.co/npm/image-focus.png)](https://nodei.co/npm/image-focus/)
-
 [![npm version](https://img.shields.io/npm/v/image-focus.svg)](https://www.npmjs.com/package/image-focus)
 [![npm downloads](https://img.shields.io/npm/dm/image-focus.svg)](http://npm-stat.com/charts.html?package=image-focus)
 [![MIT](https://img.shields.io/npm/l/image-focus.svg)](https://github.com/third774/image-focus/blob/master/LICENSE)
