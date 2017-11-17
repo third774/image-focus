@@ -1,10 +1,7 @@
 export function debounce(func: Function, debounceTime: number) {
   let timeout: any
-  function debouncedFunction(...args) {
-    if (timeout) {
-      clearTimeout(timeout)
-    }
+  return function debouncedFunction(...args) {
+    clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), debounceTime)
   }
-  return debouncedFunction
 }
