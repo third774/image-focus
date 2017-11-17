@@ -38,6 +38,12 @@ export interface FocusedImageOptions {
    */
   updateOnWindowResize?: boolean
   /**
+   * Should container resize (even from CSS) fire debounceApplyShift?
+   *
+   * Defaults to `false`
+   */
+  updateOnContainerResize?: boolean
+  /**
    * Focus coordinates to initialize with
    *
    * Default value is `undefined`

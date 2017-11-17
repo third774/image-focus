@@ -1,25 +1,32 @@
 import { debounce } from "./helpers/debounce"
 import { assign } from "./helpers/assign"
 import { Focus, FocusedImageOptions } from "./interfaces"
+import { CONTAINER_STYLES, ABSOLUTE_STYLES } from "./sharedStyles"
 
 const IMG_STYLES = {
+  // Set these styles in case the image dimensions
+  // are smaller than the container's
   minHeight: "100%",
   minWidth: "100%",
-  position: "absolute",
-  top: "0",
-  right: "0",
-  bottom: "0",
-  left: "0",
 }
 
-const CONTAINER_STYLES = {
-  position: "relative",
-  overflow: "hidden",
+const RESIZE_LISTENER_OBJECT_STYLES = {
+  height: "100%",
+  width: "100%",
+  border: "none",
+
+  // set these styles to emulate "visibility: hidden"
+  // can't use visibility because it breaks the object
+  // events in Firefox
+  opacity: 0,
+  zIndex: -1,
+  pointerEvents: "none",
 }
 
 const DEFAULT_OPTIONS: FocusedImageOptions = {
   debounceTime: 17,
   updateOnWindowResize: true,
+  updateOnContainerResize: false,
 }
 
 export class FocusedImage {
@@ -27,26 +34,47 @@ export class FocusedImage {
   options: FocusedImageOptions
   container: HTMLElement
   img: HTMLImageElement
+  resizeListenerObject: HTMLObjectElement
   listening: boolean = false
   debounceApplyShift: () => void
 
-  constructor(private initializationNode: HTMLImageElement, options?: FocusedImageOptions) {
-    this.options = assign(DEFAULT_OPTIONS, options || {})
-    this.setUpElementReferences(initializationNode)
-    this.setUpInstance()
-    this.setUpStyles()
+  constructor(private imageNode: HTMLImageElement, options: FocusedImageOptions = {}) {
+    // Merge in options
+    this.options = assign(DEFAULT_OPTIONS, options)
+
+    // Set up element references
+    this.img = imageNode
+    this.container = imageNode.parentElement
+
+    // Set up instance
+    if (this.img["__focused_image_instance__"]) {
+      this.img["__focused_image_instance__"].stopListening()
+      this.img.removeEventListener("load", this.applyShift)
+    }
+    this.img["__focused_image_instance__"] = this
+
+    // Add image load event listener
+    this.img.addEventListener("load", this.applyShift)
+
+    // Set up styles
+    assign(this.container.style, CONTAINER_STYLES)
+    assign(this.img.style, IMG_STYLES, ABSOLUTE_STYLES)
+
+    // Create debouncedShift function
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
-    if (this.options.focus) {
-      this.focus = this.options.focus
-    } else {
-      this.focus = {
-        x: parseFloat(this.img.getAttribute("data-focus-x")),
-        y: parseFloat(this.img.getAttribute("data-focus-y")),
-      }
-    }
-    if (this.options.updateOnWindowResize) {
-      this.startListening()
-    }
+
+    // Initialize focus
+    this.focus = this.options.focus
+      ? this.options.focus
+      : {
+          x: parseFloat(this.img.getAttribute("data-focus-x")) || 0,
+          y: parseFloat(this.img.getAttribute("data-focus-y")) || 0,
+        }
+
+    // Start listening for resize events
+    this.startListening()
+
+    // Set focus
     this.setFocus(this.focus)
   }
 
@@ -97,7 +125,24 @@ export class FocusedImage {
       return
     }
     this.listening = true
-    window.addEventListener("resize", this.debounceApplyShift)
+    if (this.options.updateOnWindowResize) {
+      window.addEventListener("resize", this.debounceApplyShift)
+    }
+    if (this.options.updateOnContainerResize) {
+      const object = document.createElement("object")
+      assign(object.style, RESIZE_LISTENER_OBJECT_STYLES, ABSOLUTE_STYLES)
+      // Use load event callback because contentDocument doesn't exist
+      // until this fires in Firefox
+      object.addEventListener("load", (e: Event) =>
+        object.contentDocument.defaultView.addEventListener("resize", () => this.debounceApplyShift()),
+      )
+      object.type = "text/html"
+      object.setAttribute("aria-hidden", "true")
+      object.tabIndex = -1
+      this.container.appendChild(object)
+      object.data = "about:blank"
+      this.resizeListenerObject = object
+    }
   }
 
   public stopListening() {
@@ -106,25 +151,14 @@ export class FocusedImage {
     }
     this.listening = false
     window.removeEventListener("resize", this.debounceApplyShift)
-  }
-
-  private setUpStyles() {
-    assign(this.container.style, CONTAINER_STYLES)
-    assign(this.img.style, IMG_STYLES)
-  }
-
-  private setUpElementReferences(initializationNode: HTMLImageElement) {
-    this.img = initializationNode
-    this.container = initializationNode.parentElement
-  }
-
-  private setUpInstance() {
-    if (this.img["__focused_image_instance__"]) {
-      this.img["__focused_image_instance__"].stopListening()
-      this.img.removeEventListener("load", this.applyShift)
+    if (this.resizeListenerObject) {
+      this.resizeListenerObject.contentDocument.defaultView.removeEventListener(
+        "resize",
+        this.debounceApplyShift,
+      )
+      this.container.removeChild(this.resizeListenerObject)
+      this.resizeListenerObject = null
     }
-    this.img["__focused_image_instance__"] = this
-    this.img.addEventListener("load", this.applyShift)
   }
 
   // Calculate the new left/top values of an image

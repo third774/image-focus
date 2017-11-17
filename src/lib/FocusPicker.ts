@@ -1,6 +1,6 @@
-import { firstNumberIn } from "./helpers/firstNumberIn"
 import { noop } from "./helpers/noop"
 import { assign } from "./helpers/assign"
+import { CONTAINER_STYLES } from "./sharedStyles"
 import { Focus, OnFocusChange, FocusPickerOptions } from "./interfaces"
 
 import retina from "./retina.svg"
@@ -9,11 +9,6 @@ const IMAGE_STYLES = {
   display: "block",
   maxWidth: "100%",
   touchAction: "none",
-}
-
-const CONTAINER_STYLES = {
-  position: "relative",
-  overflow: "hidden",
 }
 
 const RETINA_STYLES = {
@@ -35,54 +30,19 @@ export class FocusPicker {
   private isDragging: boolean
   private options: FocusPickerOptions
 
-  constructor(initializationNode: HTMLImageElement, options?: FocusPickerOptions) {
-    this.options = assign(DEFAULT_OPTIONS, options || {})
-    this.setUpElementReferences(initializationNode)
-    this.bindContainerEvents()
-    this.setUpImageAttributes()
-    this.assignStyles()
-    this.initailizeFocusCoordinates()
-    this.setFocus(this.focus)
-  }
+  constructor(imageNode: HTMLImageElement, options: FocusPickerOptions = {}) {
+    // Merge options in
+    this.options = assign(DEFAULT_OPTIONS, options)
 
-  public setFocus = (focus: Focus) => {
-    this.focus = focus
-    this.updateRetinaPositionFromFocus()
-    this.options.onChange(focus)
-  }
-
-  private assignStyles() {
-    assign(this.img.style, IMAGE_STYLES)
-    assign(this.retina.style, RETINA_STYLES)
-    assign(this.container.style, CONTAINER_STYLES)
-  }
-
-  private initailizeFocusCoordinates() {
-    const x = firstNumberIn([
-      this.options.focus && this.options.focus.x,
-      this.img.getAttribute("data-focus-x"),
-      0,
-    ])
-
-    const y = firstNumberIn([
-      this.options.focus && this.options.focus.y,
-      this.img.getAttribute("data-focus-y"),
-      0,
-    ])
-
-    this.focus = { x, y }
-  }
-
-  private setUpElementReferences(initializationNode: HTMLImageElement) {
-    this.img = initializationNode
-    this.container = initializationNode.parentElement
+    // Set up references
+    this.img = imageNode
+    this.container = imageNode.parentElement
     this.retina = document.createElement("img")
     this.retina.src = this.options.retina
     this.retina.draggable = false
     this.container.appendChild(this.retina)
-  }
 
-  private bindContainerEvents() {
+    // Bind container events
     this.container.addEventListener("mousedown", this.startDragging)
     this.container.addEventListener("mousemove", this.handleMove)
     this.container.addEventListener("mouseup", this.stopDragging)
@@ -93,6 +53,34 @@ export class FocusPicker {
     // https://github.com/Microsoft/TypeScript/issues/9548
     this.container.addEventListener("touchstart", this.startDragging, { passive: true } as any)
     this.container.addEventListener("touchmove", this.handleMove, { passive: true } as any)
+
+    // Set up image
+    this.img.draggable = false
+    this.img.addEventListener("load", this.updateRetinaPositionFromFocus)
+
+    // Assign styles
+    assign(this.img.style, IMAGE_STYLES)
+    assign(this.retina.style, RETINA_STYLES)
+    assign(this.container.style, CONTAINER_STYLES)
+
+    // Initialize Focus coordinates
+    this.focus = this.options.focus
+      ? this.options.focus
+      : {
+          x: parseFloat(this.img.getAttribute("data-focus-x")) || 0,
+          y: parseFloat(this.img.getAttribute("data-focus-y")) || 0,
+        }
+
+    // Set the focus
+    this.setFocus(this.focus)
+  }
+
+  public setFocus(focus: Focus) {
+    this.focus = focus
+    this.img.setAttribute("data-focus-x", focus.x.toString())
+    this.img.setAttribute("data-focus-y", focus.y.toString())
+    this.updateRetinaPositionFromFocus()
+    this.options.onChange(focus)
   }
 
   private startDragging = (e: MouseEvent | TouchEvent) => {
@@ -120,12 +108,7 @@ export class FocusPicker {
     this.isDragging = false
   }
 
-  private setUpImageAttributes() {
-    this.img.draggable = false
-    this.img.addEventListener("load", this.updateRetinaPositionFromFocus)
-  }
-
-  private calculateOffsetFromFocus = () => {
+  private calculateOffsetFromFocus() {
     const { width, height } = this.img.getBoundingClientRect()
     const offsetX = width * (this.focus.x / 2 + 0.5)
     const offsetY = height * (this.focus.y / -2 + 0.5)
@@ -150,12 +133,6 @@ export class FocusPicker {
     const offsetY = clientY - top
     const x = (offsetX / width - 0.5) * 2
     const y = (offsetY / height - 0.5) * -2
-    this.focus = { x, y }
-
-    this.updateRetinaPosition({ offsetX, offsetY })
-
-    this.img.setAttribute("data-focus-x", x.toString())
-    this.img.setAttribute("data-focus-y", y.toString())
-    this.options.onChange(this.focus)
+    this.setFocus({ x, y })
   }
 }
