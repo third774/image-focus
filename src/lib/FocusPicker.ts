@@ -6,14 +6,19 @@ import { Focus, OnFocusChange, FocusPickerOptions } from "./interfaces"
 import retina from "./retina.svg"
 
 const IMAGE_STYLES = {
+  // Get rid of bottom padding from default display
   display: "block",
+  // Make image fill container
   maxWidth: "100%",
+  // Prevent Android refresh on pull down
   touchAction: "none",
 }
 
 const RETINA_STYLES = {
   position: "absolute",
   cursor: "move",
+
+  // Center the retina
   transform: "translate(-50%, -50%)",
 }
 
@@ -133,6 +138,9 @@ export class FocusPicker {
     const offsetY = clientY - top
     const x = (offsetX / width - 0.5) * 2
     const y = (offsetY / height - 0.5) * -2
+
+    // TODO: Figure out an elegant way to use the setFocus API without
+    // having to recalculate the offset from focus
     this.setFocus({ x, y })
   }
 }
