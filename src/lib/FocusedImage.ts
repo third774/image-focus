@@ -163,7 +163,7 @@ export class FocusedImage {
     }
   }
 
-  // Calculate the new left/top values of an image
+  // Calculate the new left/top percentage shift of an image
   private calcShift(
     conToImageRatio: number,
     containerSize: number,
