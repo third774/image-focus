@@ -113,9 +113,9 @@ export class FocusedImage {
     }
 
     if (wR > hR) {
-      hShift = this.calcShift(hR, containerW, imageW, this.focus.x)
+      hShift = `${this.calcShift(hR, containerW, imageW, this.focus.x)}%`
     } else if (wR < hR) {
-      vShift = this.calcShift(wR, containerH, imageH, this.focus.y, true)
+      vShift = `${this.calcShift(wR, containerH, imageH, this.focus.y, true)}%`
     }
 
     this.img.style.top = vShift
@@ -182,6 +182,6 @@ export class FocusedImage {
     if (remainder < containerRemainder) focusOffset -= containerRemainder - remainder
     if (focusOffset < 0) focusOffset = 0
 
-    return focusOffset * -100 / containerSize + "%"
+    return focusOffset * -100 / containerSize
   }
 }
