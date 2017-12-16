@@ -49,4 +49,10 @@ export interface FocusedImageOptions {
    * Default value is `undefined`
    */
   focus?: Focus
+  /**
+   * Container position
+   *
+   * Default value is "relative"
+   */
+  containerPosition?: "fixed" | "relative" | "absolute" | "sticky"
 }

@@ -27,6 +27,7 @@ const DEFAULT_OPTIONS: FocusedImageOptions = {
   debounceTime: 17,
   updateOnWindowResize: true,
   updateOnContainerResize: false,
+  containerPosition: "relative",
 }
 
 export class FocusedImage {
@@ -58,6 +59,7 @@ export class FocusedImage {
 
     // Set up styles
     assign(this.container.style, CONTAINER_STYLES)
+    this.container.style.position = this.options.containerPosition
     assign(this.img.style, IMG_STYLES, ABSOLUTE_STYLES)
 
     // Create debouncedShift function
