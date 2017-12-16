@@ -30,7 +30,7 @@
     "clean": "rimraf dist && rimraf compiled",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "npm run clean && tsc && copyfiles -f src/lib/retina.svg compiled && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal src/lib",
+    "build": "npm run clean && tsc && copyfiles -f src/lib/retina.svg compiled && rollup -c rollup.config.ts && typedoc --readme none --out dist/docs --target es6 --theme minimal src/lib",
     "start": "npm run clean && webpack-dev-server --open",
     "test": "npm run clean && jest",
     "test:watch": "jest --watch",
