@@ -1,7 +1,7 @@
 {
   "name": "image-focus",
   "version": "1.0.0",
-  "description": "A dependency free utility for cropping images based on a focal point ~2.6kB gzipped",
+  "description": "A dependency free utility for cropping images based on a focal point ~2.13kB gzipped",
   "keywords": [
     "responsive",
     "image",
