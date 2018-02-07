@@ -91,10 +91,6 @@ export class FocusedImage {
     const { naturalWidth: imageW, naturalHeight: imageH } = this.img
     const { width: containerW, height: containerH } = this.container.getBoundingClientRect()
 
-    // Amount position will be shifted
-    let hShift = "0"
-    let vShift = "0"
-
     if (!(containerW > 0 && containerH > 0 && imageW > 0 && imageH > 0)) {
       return false // Need dimensions to proceed
     }
@@ -112,14 +108,15 @@ export class FocusedImage {
       this.img.style[wR > hR ? "maxHeight" : "maxWidth"] = "100%"
     }
 
+    // Amount position will be shifted
+    let transform
     if (wR > hR) {
-      hShift = `${this.calcShift(hR, containerW, imageW, this.focus.x)}%`
+      transform = `translateX(${this.calcShift(hR, containerW, imageW, this.focus.x)}px)`
     } else if (wR < hR) {
-      vShift = `${this.calcShift(wR, containerH, imageH, this.focus.y, true)}%`
+      transform = `translateY(${this.calcShift(wR, containerH, imageH, this.focus.y, true)}px)`
     }
 
-    this.img.style.top = vShift
-    this.img.style.left = hShift
+    this.img.style.transform = transform
   }
 
   public startListening() {
@@ -163,25 +160,26 @@ export class FocusedImage {
     }
   }
 
-  // Calculate the new left/top percentage shift of an image
+  // Calculate the new translate px
   private calcShift(
-    conToImageRatio: number,
+    containerToImageRatio: number,
     containerSize: number,
-    imageSize: number,
-    focusSize: number,
-    toMinus?: boolean,
+    fullImageSize: number,
+    focusCoordinate: number,
+    invertPercentageScale?: boolean,
   ) {
-    const containerCenter = Math.floor(containerSize / 2) // Container center in px
-    const focusFactor = (focusSize + 1) / 2 // Focus point of resize image in px
-    const scaledImage = Math.floor(imageSize / conToImageRatio) // Can't use width() as images may be display:none
-    let focus = Math.floor(focusFactor * scaledImage)
-    if (toMinus) focus = scaledImage - focus
-    let focusOffset = focus - containerCenter // Calculate difference between focus point and center
-    const remainder = scaledImage - focus // Reduce offset if necessary so image remains filled
-    const containerRemainder = containerSize - containerCenter
-    if (remainder < containerRemainder) focusOffset -= containerRemainder - remainder
-    if (focusOffset < 0) focusOffset = 0
+    // convert from -1 to +1 coordinates to 0-100% scale
+    let shiftPercentage = (focusCoordinate + 1) / 2
+    if (invertPercentageScale) shiftPercentage = 1 - shiftPercentage
 
-    return focusOffset * -100 / containerSize
+    const halfContainer = containerSize / 2
+    const halfImage = fullImageSize / 2
+
+    let shift = fullImageSize / containerToImageRatio * shiftPercentage - halfContainer
+    if (shift < 0) return 0
+
+    const scaledDownImageCenter = halfImage / containerToImageRatio
+    const shiftBoundary = (scaledDownImageCenter - halfContainer) * 2
+    return Math.min(shiftBoundary, shift) * -1
   }
 }
