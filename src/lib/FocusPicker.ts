@@ -37,7 +37,7 @@ export class FocusPicker {
 
   constructor(imageNode: HTMLImageElement, options: FocusPickerOptions = {}) {
     // Merge options in
-    this.options = assign(DEFAULT_OPTIONS, options)
+    this.options = assign({}, DEFAULT_OPTIONS, options)
 
     // Set up references
     this.img = imageNode
@@ -47,21 +47,11 @@ export class FocusPicker {
     this.retina.draggable = false
     this.container.appendChild(this.retina)
 
-    // Bind container events
-    this.container.addEventListener("mousedown", this.startDragging)
-    this.container.addEventListener("mousemove", this.handleMove)
-    this.container.addEventListener("mouseup", this.stopDragging)
-    this.container.addEventListener("mouseleave", this.stopDragging)
-    this.container.addEventListener("touchend", this.stopDragging)
-
-    // temporarily cast config objs until this issue is resolved
-    // https://github.com/Microsoft/TypeScript/issues/9548
-    this.container.addEventListener("touchstart", this.startDragging, { passive: true } as any)
-    this.container.addEventListener("touchmove", this.handleMove, { passive: true } as any)
-
     // Set up image
     this.img.draggable = false
-    this.img.addEventListener("load", this.updateRetinaPositionFromFocus)
+
+    // Bind events
+    this.startListening()
 
     // Assign styles
     assign(this.img.style, IMAGE_STYLES)
@@ -78,6 +68,33 @@ export class FocusPicker {
 
     // Set the focus
     this.setFocus(this.focus)
+  }
+
+  public startListening() {
+    // Bind container events
+    this.container.addEventListener("mousedown", this.startDragging)
+    this.container.addEventListener("mousemove", this.handleMove)
+    this.container.addEventListener("mouseup", this.stopDragging)
+    this.container.addEventListener("mouseleave", this.stopDragging)
+    this.container.addEventListener("touchend", this.stopDragging)
+
+    // temporarily cast config objs until this issue is resolved
+    // https://github.com/Microsoft/TypeScript/issues/9548
+    this.container.addEventListener("touchstart", this.startDragging, { passive: true } as any)
+    this.container.addEventListener("touchmove", this.handleMove, { passive: true } as any)
+
+    this.img.addEventListener("load", this.updateRetinaPositionFromFocus)
+  }
+
+  public stopListening() {
+    this.container.removeEventListener("mousedown", this.startDragging)
+    this.container.removeEventListener("mousemove", this.handleMove)
+    this.container.removeEventListener("mouseup", this.stopDragging)
+    this.container.removeEventListener("mouseleave", this.stopDragging)
+    this.container.removeEventListener("touchend", this.stopDragging)
+    this.container.removeEventListener("touchstart", this.startDragging)
+    this.container.removeEventListener("touchmove", this.handleMove)
+    this.img.removeEventListener("load", this.updateRetinaPositionFromFocus)
   }
 
   public setFocus(focus: Focus) {
