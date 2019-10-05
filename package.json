@@ -122,7 +122,7 @@
     "typescript": "^2.3.4",
     "validate-commit-msg": "^2.12.2",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
+    "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {}
 }
