@@ -48,7 +48,7 @@ describe("FocusedImage", () => {
     const instance = new FocusedImage(img)
     // TODO: figure out a better way to test this private method
     const result = (instance as any).calcShift(7.064574627454072, 238.90625, 2400, 0.7133333333333334)
-    expect(result).toBe("-41.89666448659254%")
+    expect(result).toBe(-41.89666448659254)
   })
 
   it("should have element references", () => {
