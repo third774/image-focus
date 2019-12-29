@@ -7,7 +7,7 @@ export interface Focus {
  * @param {Focus} focusCoordinates
  * @returns {void}
  */
-export type OnFocusChange = (focusCoordinates: { x: number; y: number }) => void
+export type OnFocusChange = (focusCoordinates: Focus) => void
 
 export interface FocusPickerOptions {
   /**
