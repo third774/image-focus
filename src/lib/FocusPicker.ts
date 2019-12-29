@@ -1,5 +1,4 @@
 import { noop } from "./helpers/noop"
-import { assign } from "./helpers/assign"
 import { CONTAINER_STYLES } from "./sharedStyles"
 import { Focus, OnFocusChange, FocusPickerOptions } from "./interfaces"
 
@@ -22,9 +21,10 @@ const RETINA_STYLES = {
   transform: "translate(-50%, -50%)",
 }
 
-const DEFAULT_OPTIONS: FocusPickerOptions = {
+const DEFAULT_OPTIONS: Required<FocusPickerOptions> = {
   onChange: noop,
   retina,
+  focus: { x: 0, y: 0 },
 }
 
 export class FocusPicker {
@@ -32,12 +32,14 @@ export class FocusPicker {
   img: HTMLImageElement
   retina: HTMLImageElement
   focus: Focus
-  private isDragging: boolean
-  private options: FocusPickerOptions
+  private isDragging = false
+  private options: Required<FocusPickerOptions>
 
   constructor(imageNode: HTMLImageElement, options: FocusPickerOptions = {}) {
     // Merge options in
-    this.options = assign({}, DEFAULT_OPTIONS, options)
+    this.options = Object.assign({}, DEFAULT_OPTIONS, options)
+
+    if (imageNode.parentElement === null) throw new Error("Image node has no parent")
 
     // Set up references
     this.img = imageNode
@@ -54,16 +56,18 @@ export class FocusPicker {
     this.startListening()
 
     // Assign styles
-    assign(this.img.style, IMAGE_STYLES)
-    assign(this.retina.style, RETINA_STYLES)
-    assign(this.container.style, CONTAINER_STYLES)
+    Object.assign(this.img.style, IMAGE_STYLES)
+    Object.assign(this.retina.style, RETINA_STYLES)
+    Object.assign(this.container.style, CONTAINER_STYLES)
+
+    const { focusX, focusY } = this.img.dataset
 
     // Initialize Focus coordinates
     this.focus = this.options.focus
       ? this.options.focus
       : {
-          x: parseFloat(this.img.getAttribute("data-focus-x")) || 0,
-          y: parseFloat(this.img.getAttribute("data-focus-y")) || 0,
+          x: parseFloat(focusX ?? "0"),
+          y: parseFloat(focusY ?? "0"),
         }
 
     // Set the focus
@@ -102,7 +106,7 @@ export class FocusPicker {
     this.img.setAttribute("data-focus-x", focus.x.toString())
     this.img.setAttribute("data-focus-y", focus.y.toString())
     this.updateRetinaPositionFromFocus()
-    this.options.onChange(focus)
+    this.options.onChange?.(focus)
   }
 
   private startDragging = (e: MouseEvent | TouchEvent) => {

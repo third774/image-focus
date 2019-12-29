@@ -1,5 +1,4 @@
 import { debounce } from "./helpers/debounce"
-import { assign } from "./helpers/assign"
 import { Focus, FocusedImageOptions } from "./interfaces"
 import { CONTAINER_STYLES, ABSOLUTE_STYLES } from "./sharedStyles"
 
@@ -23,54 +22,53 @@ const RESIZE_LISTENER_OBJECT_STYLES = {
   pointerEvents: "none",
 }
 
-const DEFAULT_OPTIONS: FocusedImageOptions = {
+const DEFAULT_OPTIONS: Required<FocusedImageOptions> = {
   debounceTime: 17,
   updateOnWindowResize: true,
   updateOnContainerResize: false,
   containerPosition: "relative",
+  focus: { x: 0, y: 0 },
 }
 
 export class FocusedImage {
   focus: Focus
-  options: FocusedImageOptions
+  options: Required<FocusedImageOptions>
   container: HTMLElement
   img: HTMLImageElement
-  resizeListenerObject: HTMLObjectElement
+  resizeListenerObject?: HTMLObjectElement
   listening: boolean = false
   debounceApplyShift: () => void
 
   constructor(private imageNode: HTMLImageElement, options: FocusedImageOptions = {}) {
     // Merge in options
-    this.options = assign(DEFAULT_OPTIONS, options)
+    this.options = Object.assign(DEFAULT_OPTIONS, options)
 
     // Set up element references
     this.img = imageNode
-    this.container = imageNode.parentElement
-
-    // Set up instance
-    if (this.img["__focused_image_instance__"]) {
-      this.img["__focused_image_instance__"].stopListening()
-      this.img.removeEventListener("load", this.applyShift)
+    if (imageNode.parentElement === null) {
+      throw new Error("Image node does not have a parent")
     }
-    this.img["__focused_image_instance__"] = this
+    this.container = imageNode.parentElement
 
     // Add image load event listener
     this.img.addEventListener("load", this.applyShift)
 
     // Set up styles
-    assign(this.container.style, CONTAINER_STYLES)
+    Object.assign(this.container.style, CONTAINER_STYLES)
     this.container.style.position = this.options.containerPosition
-    assign(this.img.style, IMG_STYLES, ABSOLUTE_STYLES)
+    Object.assign(this.img.style, IMG_STYLES, ABSOLUTE_STYLES)
 
     // Create debouncedShift function
     this.debounceApplyShift = debounce(this.applyShift, this.options.debounceTime)
+
+    const { focusX, focusY } = this.img.dataset
 
     // Initialize focus
     this.focus = this.options.focus
       ? this.options.focus
       : {
-          x: parseFloat(this.img.getAttribute("data-focus-x")) || 0,
-          y: parseFloat(this.img.getAttribute("data-focus-y")) || 0,
+          x: parseFloat(focusX ?? "0"),
+          y: parseFloat(focusY ?? "0"),
         }
 
     // Start listening for resize events
@@ -104,8 +102,8 @@ export class FocusedImage {
     const hR = imageH / containerH
 
     // Reset max-width and -height
-    this.img.style.maxHeight = null
-    this.img.style.maxWidth = null
+    this.img.style.maxHeight = "initial"
+    this.img.style.maxWidth = "initial"
 
     // Minimize image while still filling space
     if (imageW > containerW && imageH > containerH) {
@@ -132,11 +130,14 @@ export class FocusedImage {
     }
     if (this.options.updateOnContainerResize) {
       const object = document.createElement("object")
-      assign(object.style, RESIZE_LISTENER_OBJECT_STYLES, ABSOLUTE_STYLES)
+      Object.assign(object.style, RESIZE_LISTENER_OBJECT_STYLES, ABSOLUTE_STYLES)
       // Use load event callback because contentDocument doesn't exist
       // until this fires in Firefox
-      object.addEventListener("load", (e: Event) =>
-        object.contentDocument.defaultView.addEventListener("resize", () => this.debounceApplyShift()),
+      object.addEventListener(
+        "load",
+        (e: Event) =>
+          object.contentDocument?.defaultView &&
+          object.contentDocument.defaultView.addEventListener("resize", () => this.debounceApplyShift()),
       )
       object.type = "text/html"
       object.setAttribute("aria-hidden", "true")
@@ -153,13 +154,13 @@ export class FocusedImage {
     }
     this.listening = false
     window.removeEventListener("resize", this.debounceApplyShift)
-    if (this.resizeListenerObject) {
+    if (this.resizeListenerObject?.contentDocument?.defaultView) {
       this.resizeListenerObject.contentDocument.defaultView.removeEventListener(
         "resize",
         this.debounceApplyShift,
       )
       this.container.removeChild(this.resizeListenerObject)
-      this.resizeListenerObject = null
+      this.resizeListenerObject = undefined
     }
   }
 
@@ -182,6 +183,6 @@ export class FocusedImage {
     if (remainder < containerRemainder) focusOffset -= containerRemainder - remainder
     if (focusOffset < 0) focusOffset = 0
 
-    return focusOffset * -100 / containerSize
+    return (focusOffset * -100) / containerSize
   }
 }

@@ -1,7 +1,7 @@
 export const CONTAINER_STYLES = {
   position: "relative",
   overflow: "hidden",
-}
+} as const
 
 export const ABSOLUTE_STYLES = {
   position: "absolute",
@@ -9,4 +9,4 @@ export const ABSOLUTE_STYLES = {
   right: "0",
   bottom: "0",
   left: "0",
-}
+} as const
