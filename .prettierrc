@@ -1,6 +1,0 @@
-{
-  "semi": false,
-  "parser": "typescript",
-  "trailingComma": "all",
-  "printWidth": 110
-}
