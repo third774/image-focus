@@ -1,128 +1,42 @@
 {
-  "name": "image-focus",
-  "version": "1.1.0",
-  "description": "A dependency free utility for cropping images based on a focal point ~2.13kB gzipped",
-  "keywords": [
-    "responsive",
-    "image",
-    "focus",
-    "crop",
-    "cropper",
-    "focal",
-    "focuspoint"
-  ],
-  "main": "dist/image-focus.umd.js",
-  "module": "dist/image-focus.es5.js",
-  "typings": "dist/types/main.d.ts",
-  "files": [
-    "dist"
-  ],
-  "author": "Kevin Kipp <kevin.kipp@gmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/third774/image-focus"
-  },
+  "version": "0.1.0",
   "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10"
   },
   "scripts": {
-    "clean": "rimraf dist && rimraf compiled",
-    "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "prebuild": "rimraf dist",
-    "build": "npm run clean && tsc && copyfiles -f src/lib/retina.svg compiled && rollup -c rollup.config.ts && typedoc --readme none --out dist/docs --target es6 --theme minimal src/lib",
-    "start": "npm run clean && webpack-dev-server --open",
-    "test": "npm run clean && jest",
-    "test:watch": "jest --watch",
-    "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
-    "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "commit": "git-cz",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
-    "precommit": "lint-staged"
+    "start": "tsdx watch",
+    "build": "tsdx build --format cjs,esm,umd",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build"
   },
-  "lint-staged": {
-    "{src,test}/**/*.ts": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    },
-    "validate-commit-msg": {
-      "types": "conventional-commit-types",
-      "helpMessage": "Use \"npm run commit\" instead, we use conventional-changelog format :) (https://github.com/commitizen/cz-cli)"
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
     }
   },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/assetsTransformer.js"
-    },
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/test/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 95,
-        "lines": 95,
-        "statements": 95
-      }
-    },
-    "collectCoverage": true,
-    "mapCoverage": true
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
   },
+  "name": "image-focus",
+  "author": "Kevin Kipp",
+  "module": "dist/image-focus-tsdx.esm.js",
   "devDependencies": {
-    "@types/jest": "^21.1.0",
-    "@types/node": "^8.0.0",
-    "colors": "^1.1.2",
-    "commitizen": "^2.9.6",
-    "copyfiles": "^1.2.0",
-    "coveralls": "^3.0.0",
-    "cross-env": "^5.0.1",
-    "cz-conventional-changelog": "^2.0.0",
-    "dotenv": "^4.0.0",
-    "file-loader": "^1.1.5",
-    "html-webpack-plugin": "^2.30.1",
-    "husky": "^0.14.0",
-    "jest": "^21.0.0",
-    "lint-staged": "^4.0.0",
-    "lodash.camelcase": "^4.3.0",
-    "prettier": "^1.4.4",
-    "prompt": "^1.0.0",
-    "replace-in-file": "^3.0.0-beta.2",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.50.0",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-svg": "^1.0.1",
-    "rollup-plugin-uglify-es": "0.0.1",
-    "semantic-release": "^8.0.0",
-    "ts-jest": "^21.0.0",
-    "ts-loader": "^3.1.1",
-    "ts-node": "^3.0.6",
-    "tslint": "^5.4.3",
-    "tslint-config-prettier": "^1.1.0",
-    "tslint-config-standard": "^7.0.0",
-    "typedoc": "^0.9.0",
-    "typescript": "^2.3.4",
-    "validate-commit-msg": "^2.12.2",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.4"
-  },
-  "dependencies": {}
+    "@rollup/plugin-image": "^2.0.5",
+    "husky": "^4.2.5",
+    "tsdx": "^0.13.2",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.3"
+  }
 }

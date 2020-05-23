@@ -1,4 +1,4 @@
-import { FocusedImage, FocusPicker, Focus } from "../lib/main"
+import { FocusedImage, FocusPicker, Focus } from "../."
 
 // Get our references to elements
 const focusPickerEl = document.getElementById("focus-picker-img") as HTMLImageElement
