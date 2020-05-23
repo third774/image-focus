@@ -30,7 +30,7 @@
     "build": "tsdx build --format cjs,esm,umd",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
-    "prepare": "tsdx build"
+    "prepare": "tsdx build --format cjs,esm,umd"
   },
   "peerDependencies": {},
   "husky": {
