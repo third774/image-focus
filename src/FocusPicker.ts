@@ -1,5 +1,6 @@
 import { noop } from './helpers/noop';
 import { assign } from './helpers/assign';
+import { debounce } from './helpers/debounce';
 import { CONTAINER_STYLES } from './sharedStyles';
 import { Focus, FocusPickerOptions } from './interfaces';
 
@@ -62,9 +63,9 @@ export class FocusPicker {
     this.focus = this.options.focus
       ? this.options.focus
       : {
-          x: parseFloat(this.img.getAttribute('data-focus-x')) || 0,
-          y: parseFloat(this.img.getAttribute('data-focus-y')) || 0,
-        };
+        x: parseFloat(this.img.getAttribute('data-focus-x')) || 0,
+        y: parseFloat(this.img.getAttribute('data-focus-y')) || 0,
+      };
 
     // Set the focus
     this.setFocus(this.focus);
@@ -88,6 +89,7 @@ export class FocusPicker {
     } as any);
 
     this.img.addEventListener('load', this.updateRetinaPositionFromFocus);
+    window.addEventListener('resize', debounce(this.updateRetinaPositionFromFocus, 50));
   }
 
   public stopListening() {
@@ -99,6 +101,7 @@ export class FocusPicker {
     this.container.removeEventListener('touchstart', this.startDragging);
     this.container.removeEventListener('touchmove', this.handleMove);
     this.img.removeEventListener('load', this.updateRetinaPositionFromFocus);
+    window.removeEventListener('resize', debounce(this.updateRetinaPositionFromFocus, 50));
   }
 
   public setFocus(focus: Focus) {
