@@ -75,9 +75,9 @@ export class FocusedImage {
     this.focus = this.options.focus
       ? this.options.focus
       : {
-        x: parseFloat(this.img.getAttribute('data-focus-x')) || 0,
-        y: parseFloat(this.img.getAttribute('data-focus-y')) || 0,
-      };
+          x: parseFloat(this.img.getAttribute('data-focus-x')) || 0,
+          y: parseFloat(this.img.getAttribute('data-focus-y')) || 0,
+        };
 
     // Start listening for resize events
     this.startListening();
