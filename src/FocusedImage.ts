@@ -164,7 +164,10 @@ export class FocusedImage {
     }
     this.listening = false;
     window.removeEventListener('resize', this.debounceApplyShift);
-    if (this.resizeListenerObject) {
+    if (
+      this.resizeListenerObject &&
+      this.resizeListenerObject.contentDocument
+    ) {
       this.resizeListenerObject.contentDocument.defaultView.removeEventListener(
         'resize',
         this.debounceApplyShift
