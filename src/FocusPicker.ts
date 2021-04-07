@@ -34,6 +34,7 @@ export class FocusPicker {
   focus: Focus;
   private isDragging: boolean;
   private options: FocusPickerOptions;
+  private _enabled: boolean = false;
 
   constructor(imageNode: HTMLImageElement, options: FocusPickerOptions = {}) {
     // Merge options in
@@ -42,32 +43,56 @@ export class FocusPicker {
     // Set up references
     this.img = imageNode;
     this.container = imageNode.parentElement;
-    this.retina = document.createElement('img');
-    this.retina.src = this.options.retina;
-    this.retina.draggable = false;
-    this.container.appendChild(this.retina);
 
-    // Set up image
+    // Styles and DOM config
     this.img.draggable = false;
-
-    // Bind events
-    this.startListening();
-
     // Assign styles
     assign(this.img.style, IMAGE_STYLES);
-    assign(this.retina.style, RETINA_STYLES);
     assign(this.container.style, CONTAINER_STYLES);
 
     // Initialize Focus coordinates
-    this.focus = this.options.focus
+    this.focus = this.getFocus();
+
+    // Create and attach the retina focal point, start listeners and attach focus
+    this.enable();
+  }
+
+  private getFocus(): Focus {
+    return this.options.focus
       ? this.options.focus
       : {
           x: parseFloat(this.img.getAttribute('data-focus-x')) || 0,
           y: parseFloat(this.img.getAttribute('data-focus-y')) || 0,
         };
+  }
 
-    // Set the focus
-    this.setFocus(this.focus);
+  /**
+   * Creates the focal point retina and
+   */
+  public enable() {
+    if (!this._enabled) {
+      // Create and attach the retina focal point
+      this.retina = document.createElement('img');
+      this.retina.src = this.options.retina;
+      this.retina.draggable = false;
+      this.container.appendChild(this.retina);
+      assign(this.retina.style, RETINA_STYLES);
+      this.startListening();
+      this.setFocus(this.focus);
+      this._enabled = true;
+    }
+  }
+
+  public disable() {
+    if (this._enabled && this.retina) {
+      this.stopListening();
+      this.container.removeChild(this.retina);
+      this._enabled = false;
+    }
+  }
+
+  get enabled(): boolean {
+    return this._enabled;
   }
 
   public startListening() {
