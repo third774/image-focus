@@ -45,7 +45,7 @@
     "trailingComma": "es5"
   },
   "name": "image-focus",
-  "module": "dist/image-focus-tsdx.esm.js",
+  "module": "dist/image-focus.esm.js",
   "devDependencies": {
     "@rollup/plugin-image": "^2.0.5",
     "husky": "^4.2.5",
