@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A dependency free utility for cropping images based on a focal point ~2.13kB gzipped",
   "keywords": [
     "responsive",
