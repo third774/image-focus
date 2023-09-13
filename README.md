@@ -86,7 +86,7 @@ Additionally, because the `FocusedImage` is positioned absolutely so it can shif
 That's okay! [unpkg](https://unpkg.com/) has you covered. Just add this script tag to your page and the `image-focus` module is exposed in the global namespace under `window.imageFocus`.
 
 ```html
-<script src="https://unpkg.com/image-focus@1.0.2"></script>
+<script src="https://unpkg.com/image-focus@1.1.0"></script>
 ```
 
 Then in some script that loads after the above script tag:
