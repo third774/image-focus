@@ -1,4 +1,10 @@
+> [!CAUTION]
+> CSS now has [broad support](https://caniuse.com/?search=object-position) to achieve the same thing as this library using `object-fit: cover;` and `object-position: var(--x, 50%) var(--y, 50%);` where `x` and `y` can go from 0-100%.
+>
+> [See example here](https://codepen.io/third774/pen/OJdBQjW)
+
 # image-focus 📷
+
 A dependency free utility for cropping images based on a focus point ~2.13kB gzipped
 
 [![npm version](https://img.shields.io/npm/v/image-focus.svg)](https://www.npmjs.com/package/image-focus)
@@ -27,35 +33,40 @@ There are two ways to supply the coordinates when initializing the `FocusedImage
 
 ```html
 <div class="focused-image-container">
-  <img class="focused-image" src="https://picsum.photos/2400/1400" data-focus-x="0.34" data-focus-y="-0.21">
+  <img
+    class="focused-image"
+    src="https://picsum.photos/2400/1400"
+    data-focus-x="0.34"
+    data-focus-y="-0.21"
+  />
 </div>
 ```
 
 ```ts
-import { FocusedImage } from "image-focus"
+import { FocusedImage } from 'image-focus';
 
-const img = document.querySelector('.focused-image') as HTMLImageElement
-const focusedImage = new FocusedImage(img)
+const img = document.querySelector('.focused-image') as HTMLImageElement;
+const focusedImage = new FocusedImage(img);
 ```
 
 #### Using `focus` Option
 
 ```html
 <div class="focused-image-container">
-  <img class="focused-image" src="https://picsum.photos/2400/1400">
+  <img class="focused-image" src="https://picsum.photos/2400/1400" />
 </div>
 ```
 
 ```ts
-import { FocusedImage } from "image-focus"
+import { FocusedImage } from 'image-focus';
 
-const img = document.querySelector('.focused-image') as HTMLImageElement
+const img = document.querySelector('.focused-image') as HTMLImageElement;
 const focusedImage = new FocusedImage(img, {
   focus: {
     x: 0.34,
-    y: -0.21
-  }
-})
+    y: -0.21,
+  },
+});
 ```
 
 ### FocusPicker
@@ -63,16 +74,18 @@ const focusedImage = new FocusedImage(img, {
 Provide an `onChange` callback that will receive a `Focus` object that has `x` and `y` properties for the newly selected coordinates. Optionally supply a `focus` to initialize with, or a `retina` src to use instead of the default white ring SVG.
 
 ```ts
-import {FocusedImage, FocusPicker} from "image-focus"
+import { FocusedImage, FocusPicker } from 'image-focus';
 
-const imgEl = document.getElementById("focused-image") as HTMLImageElement
-const focusedImage = new FocusedImage(imgEl)
+const imgEl = document.getElementById('focused-image') as HTMLImageElement;
+const focusedImage = new FocusedImage(imgEl);
 
-const focusPickerEl = document.getElementById("focus-picker-img") as HTMLImageElement
+const focusPickerEl = document.getElementById(
+  'focus-picker-img'
+) as HTMLImageElement;
 const focusPicker = new FocusPicker(focusPickerEl, {
   onChange: focus => focusedImage.setFocus(focus),
   focus: startingFocus,
-})
+});
 ```
 
 ## What's going on?
@@ -93,7 +106,7 @@ Then in some script that loads after the above script tag:
 
 ```js
 var imgEl = document.querySelector('img.focused-image');
-var focusedImage = new imageFocus.FocusedImage(imgEl, {x: 0.25, y: -0.3});
+var focusedImage = new imageFocus.FocusedImage(imgEl, { x: 0.25, y: -0.3 });
 ```
 
 ## Attributions
