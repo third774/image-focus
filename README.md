@@ -29,7 +29,7 @@ A dependency free utility for cropping images based on a focus point ~2.13kB gzi
 
 There are two ways to supply the coordinates when initializing the `FocusedImage` class
 
-#### Data Tags
+#### Using data tags
 
 ```html
 <div class="focused-image-container">
@@ -49,7 +49,7 @@ const img = document.querySelector('.focused-image') as HTMLImageElement;
 const focusedImage = new FocusedImage(img);
 ```
 
-#### Using `focus` Option
+#### Using `focus` option
 
 ```html
 <div class="focused-image-container">
@@ -70,6 +70,18 @@ const focusedImage = new FocusedImage(img, {
 ```
 
 ### FocusPicker
+
+```html
+<div>
+   <img
+        id="focus-picker-img"
+        src="https://picsum.photos/2400/1400?image=1001"
+        alt=""
+        data-focus-x="0"
+        data-focus-y="0"
+    />
+</div>
+```
 
 Provide an `onChange` callback that will receive a `Focus` object that has `x` and `y` properties for the newly selected coordinates. Optionally supply a `focus` to initialize with, or a `retina` src to use instead of the default white ring SVG.
 
