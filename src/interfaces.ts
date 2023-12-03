@@ -58,4 +58,10 @@ export interface FocusedImageOptions {
    * Default value is "relative"
    */
   containerPosition?: 'fixed' | 'relative' | 'absolute' | 'sticky';
+  /**
+   * Focus image container
+   *
+   * Default value is  `undefined`, and code will fall back to `FocusedImage::imageNode.parentElement`
+   */
+  container?: HTMLElement;
 }

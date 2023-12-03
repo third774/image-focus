@@ -48,7 +48,9 @@ export class FocusedImage {
 
     // Set up element references
     this.img = imageNode;
-    this.container = imageNode.parentElement;
+    this.container = this.options.container
+      ? this.options.container
+      : imageNode.parentElement;
 
     // Set up instance
     if (this.img['__focused_image_instance__']) {

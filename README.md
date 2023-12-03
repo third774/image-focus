@@ -69,6 +69,30 @@ const focusedImage = new FocusedImage(img, {
 });
 ```
 
+#### Custom Ancestor Container
+
+Use the `container` option to pass in a custom ancestor. This can come in handy if you use the `<picture>` tag in your HTML.
+
+```html
+<div class="focused-image-container">
+  <picture>
+    <!-- ... -->
+    <img class="focused-image" src="https://picsum.photos/2400/1400">
+  </picture>
+</div>
+```
+
+```ts
+import { FocusedImage } from "image-focus"
+
+const img = document.querySelector('.focused-image') as HTMLImageElement
+const container = document.querySelector('.focused-image-container') as HTMLElement
+
+const focusedImage = new FocusedImage(img, {
+  container: container
+})
+```
+
 ### FocusPicker
 
 Provide an `onChange` callback that will receive a `Focus` object that has `x` and `y` properties for the newly selected coordinates. Optionally supply a `focus` to initialize with, or a `retina` src to use instead of the default white ring SVG.

@@ -27,6 +27,11 @@ describe('FocusedImage', () => {
       <div class="focused-image-container top-left">
         <img class="focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0.28" data-focus-y="0.33">
       </div>
+      <div  class="pic-focused-image-container top-left">
+        <picture class="pic-container">
+          <img class="pic-focused-image" src="https://picsum.photos/2400/1400" alt="" data-focus-x="0.28" data-focus-y="0.33">
+        <picture>
+      </div>
     </body>
     `;
   });
@@ -65,5 +70,16 @@ describe('FocusedImage', () => {
     const instance = new FocusedImage(img);
     expect(instance.img).toBeTruthy();
     expect(instance.container).toBeTruthy();
+  });
+
+  it('should use given custom container', () => {
+    const img = document.querySelector(
+      '.pic-focused-image'
+    ) as HTMLImageElement;
+    const container = document.querySelector(
+      '.pic-focused-image-container'
+    ) as HTMLElement;
+    const instance = new FocusedImage(img, { container: container });
+    expect(instance.container).toBe(container);
   });
 });
